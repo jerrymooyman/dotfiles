@@ -1,9 +1,14 @@
 " Table of Contents
 "
+" 1)  Vundle Plugins
+"   1.1)  FileTypes
+"   1.2)  Utilities     
+"   1.3)  UI
+"   1.4)  Code Navigation
 "
-"
-"
-"
+" 2)  Handle FileTypes
+" 3)  UI Tweaks
+" 4)  Other Tweaks 
 
 
 " Setup Vundle ======================="
@@ -34,7 +39,7 @@ Plugin 'jelera/vim-javascript-syntax'
 
 
 Plugin 'mxw/vim-jsx'                    "React syntax highlting
-    let g:jsx_ext_required = 0  "enable jsx on .js files
+    let g:jsx_ext_required = 0          "enable jsx on .js files
 
 
 Plugin 'othree/javascript-libraries-syntax.vim'
@@ -98,18 +103,46 @@ Plugin 'OmniSharp/omnisharp-vim'        "generic language
 
 Plugin 'sirver/ultisnips'               "snippets
     " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-    let g:UltiSnipsExpandTrigger="<tab>"
-    let g:UltiSnipsJumpForwardTrigger="<c-b>"
-    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+    "let g:UltiSnipsExpandTrigger="<tab>"
+    "let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    "let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+    function! g:UltiSnips_Complete()
+        call UltiSnips#ExpandSnippet()
+        if g:ulti_expand_res == 0
+            if pumvisible()
+                return "\<C-n>"
+            else
+                call UltiSnips#JumpForwards()
+                if g:ulti_jump_forwards_res == 0
+                    return "\<TAB>"
+                endif
+            endif
+        endif
+        return ""
+    endfunction
+
+    au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+    let g:UltiSnipsJumpForwardTrigger="<tab>"
+    let g:UltiSnipsListSnippets="<c-e>"
+    let g:UltiSnipsSnippetDirectories=["UltiSnips", "my-ultisnips"]
     let g:UltiSnipsEditSplit="vertical" " If you want :UltiSnipsEdit to split your window.
+    " this mapping Enter key to <C-y> to chose the current highlight item 
+    " and close the selection list, same as other IDEs. 
+    " CONFLICT with some plugins like tpope/Endwise
+    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 
 
 Plugin 'honza/vim-snippets'             "this one goes with ultisnips
 Plugin 'mattn/emmet-vim'                "code completer
 
 Plugin 'Raimondi/delimitMate'           "Automatic closing of quotes, brackets, etc.
+Plugin 'tpope/vim-surround'            "add/change/delete surroundings
 Plugin 'scrooloose/nerdcommenter'       "code commenter
     nmap <C-c><C-c> <leader>ci
+
+Plugin 'ervandew/supertab'              "Insert completion companion
 
 
 Plugin 'maksimr/vim-jsbeautify'         "code formatter
@@ -150,6 +183,7 @@ Plugin 'vim-airline/vim-airline'
     let g:airline#extensions#tabline#left_sep=' '
     let g:airline#extensions#tabline#left_alt_sep='|'
 
+Plugin 'jlanzarotta/bufexplorer'
 
 
 """" End UI Plugins ===================
@@ -184,7 +218,45 @@ Plugin 'rking/ag.vim'                   "super fast search - silver Searcher
 Plugin 'kien/ctrlp.vim'                 "search utility
     let g:ctrlp_map='<C-p>'
     let g:ctrlp_cmd='CtrlP'
-    let g:ctrlp_working_path_mode='ra'
+    let g:ctrlp_match_window_bottom = 1    " Show at bottom of window
+    let g:ctrlp_working_path_mode = 'ra'   " Our working path is our VCS project or the current directory
+    let g:ctrlp_mru_files = 1              " Enable Most Recently Used files feature
+    let g:ctrlp_jump_to_buffer = 2         " Jump to tab AND buffer if already open
+    "let g:ctrlp_open_new_file = 'v'        " open selections in a vertical split
+    "let g:ctrlp_open_multiple_files = 'vr' " opens multiple selections in vertical splits to the right
+    let g:ctrlp_arg_map = 0
+    let g:ctrlp_dotfiles = 0               " do not show (.) dotfiles in match list
+    let g:ctrlp_showhidden = 0             " do not show hidden files in match list
+    "let g:ctrlp_split_window = 0
+    let g:ctrlp_max_height = 40            " restrict match list to a maxheight of 40
+    let g:ctrlp_use_caching = 0            " don't cache, we want new list immediately each time
+    let g:ctrlp_max_files = 0              " no restriction on results/file list
+    let g:ctrlp_working_path_mode = ''
+    "let g:ctrlp_dont_split = 'NERD_tree_2' " don't split these buffers
+    let g:ctrlp_custom_ignore = {
+        \ 'dir':  '\v[\/]\.(git|hg|svn|gitkeep)$',
+        \ 'file': '\v\.(exe|so|dll|log|gif|jpg|jpeg|png|psd|DS_Store|ctags|gitattributes)$'
+        \ }
+        " let g:ctrlp_match_func = { 'match':
+        " 'pymatcher#PyMatch' }
+        "   " let g:ctrlp_user_command =
+        "   ['.git/', 'cd %s && git ls-files
+        "   --exclude-standard -co'] " if you
+        "   want to use git for this rather than
+        "   ag
+        "     let g:ctrlp_user_command = 'ag %s
+        "     -l --nocolor -g ""'
+    "let g:ctrlp_prompt_mappings = {
+        "\ 'AcceptSelection("e")': ['<c-e>', '<c-space>'],
+        "\ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
+        "\ 'AcceptSelection("t")': ['<c-t>'],
+        "\ 'AcceptSelection("v")': ['<cr>'],
+        "\ 'PrtSelectMove("j")':   ['<c-j>', '<down>', '<s-tab>'],
+        "\ 'PrtSelectMove("k")':   ['<c-k>', '<up>', '<tab>'],
+        "\ 'PrtHistory(-1)':       ['<c-n>'],
+        "\ 'PrtHistory(1)':        ['<c-p>'],
+        "\ 'ToggleFocus()':        ['<c-tab>'],
+        "\}
 
 Plugin 'Shougo/unite.vim'
 
@@ -219,8 +291,10 @@ filetype plugin indent on
 
 """ Handle FileTypes ==================
 
-au BufNewFile,BufRead *.ejs set filetype=html
-au BufNewFile,BufRead *.handlebar set filetype=html
+autocmd BufNewFile,BufRead *.ejs set filetype=html
+autocmd BufNewFile,BufRead *.handlebar set filetype=html
+autocmd BufNewFile,BufReadPost *.md,*.markdown set filetype=markdown
+autocmd FileType markdown set tw=80
 
 
 
@@ -257,16 +331,22 @@ set noswapfile
 
 colorscheme jellybeans
 
+""" Other Tweaks =====================
+
 set runtimepath^=~/.vim/bundle/node
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
-nmap <leader>R :source $MYVIMRC<CR>
+" source $MYVIMRC reloads the saved $MYVIMRC
+nmap <Leader>s :source $MYVIMRC<CR>
+" opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
+nmap <Leader>v :e $MYVIMRC<CR>
 
 
 
+""" Folding
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
-
-""" Other Tweaks =====================
 
 
 " buffer nav
