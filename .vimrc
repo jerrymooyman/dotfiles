@@ -99,7 +99,7 @@ Plugin 'OmniSharp/omnisharp-vim'        "generic language
     inoremap <Nul> <C-x><C-o>
 
 
-"Plugin 'ternjs/tern_for_vim'
+Plugin 'ternjs/tern_for_vim'
 
 Plugin 'sirver/ultisnips'               "snippets
     " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -173,6 +173,7 @@ Plugin 'tpope/vim-dispatch'             "shell out tasks
 """" UI Plugins =======================
 Plugin 'scrooloose/nerdtree'            "Sidebar file system explorer
     nnoremap FF :NERDTreeToggle<CR><leader><S-b>
+    let g:NERDTreeWinSize=50
 
 Plugin 'majutsushi/tagbar'              "Sidebar file tags
     nnoremap <F8> :TagbarToggle<CR> 
@@ -184,7 +185,10 @@ Plugin 'vim-airline/vim-airline'
     let g:airline#extensions#tabline#left_alt_sep='|'
 
 Plugin 'jlanzarotta/bufexplorer'
-
+	" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+	nnoremap <silent> <F12> :BufExplorer<CR>
+	nnoremap <silent> <F11> :bn<CR>
+	nnoremap <silent> <S-F11> :bp<CR>
 
 """" End UI Plugins ===================
 
@@ -303,7 +307,14 @@ autocmd FileType markdown set tw=80
 
 """ UI Tweaks =========================
 
-set t_Co=256
+if !has("gui_running")
+    set term=xterm
+    set t_Co=256
+    let &t_AB="\e[48;5;%dm"
+    let &t_AF="\e[38;5;%dm"
+    colorscheme jellybeans
+endif
+
 syntax enable
 set number                              " displays line numbers
 set cursorline
@@ -329,8 +340,6 @@ set autochdir
 set nobackup
 set noswapfile
 
-colorscheme jellybeans
-
 """ Other Tweaks =====================
 
 set runtimepath^=~/.vim/bundle/node
@@ -346,12 +355,5 @@ nmap <Leader>v :e $MYVIMRC<CR>
 """ Folding
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
-
-
-
-" buffer nav
-nnoremap <C-n> :bnext<CR>
-nnoremap <C-m> :bprevious<CR>
-"nnoremap <C-w> :bdelete<CR>
 
 
