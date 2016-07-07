@@ -160,6 +160,14 @@ Plugin 'maksimr/vim-jsbeautify'         "code formatter
     autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 
 
+Plugin 'terryma/vim-multiple-cursors'
+    let g:multi_cursor_use_default_mapping=0
+    let g:multi_cursor_start_key='<leader>m'
+    let g:multi_cursor_next_key='<C-n>'
+    let g:multi_cursor_prev_key='<C-p>'
+    let g:multi_cursor_skip_key='<C-x>'
+    let g:multi_cursor_quit_key='<Esc>'
+
 Plugin 'tpope/vim-dispatch'             "shell out tasks
 
 """" End Utilities ====================
@@ -326,6 +334,10 @@ set hlsearch
 set incsearch
 set autochdir
 
+set history=200                         "Record more history
+
+set nrformats=                          "treat all numbers as decimal, event with zero padding
+
 set nobackup
 set noswapfile
 
@@ -335,6 +347,7 @@ colorscheme jellybeans
 
 set runtimepath^=~/.vim/bundle/node
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 
 " source $MYVIMRC reloads the saved $MYVIMRC
 nmap <Leader>s :source $MYVIMRC<CR>
@@ -347,6 +360,8 @@ nmap <Leader>v :e $MYVIMRC<CR>
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
+" set paste toggle
+set pastetoggle=<F2>
 
 
 " buffer nav
