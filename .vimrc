@@ -192,6 +192,10 @@ Plugin 'vim-airline/vim-airline'
     let g:airline#extensions#tabline#left_alt_sep='|'
 
 Plugin 'jlanzarotta/bufexplorer'
+	" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+	nnoremap <silent> <F12> :BufExplorer<CR>
+	nnoremap <silent> <F11> :bn<CR>
+	nnoremap <silent> <S-F11> :bp<CR>
 
 
 """" End UI Plugins ===================
@@ -204,24 +208,29 @@ Plugin 'jlanzarotta/bufexplorer'
 
 """" Code Navigation ==================
 
-Plugin 'rking/ag.vim'                   "super fast search - silver Searcher
-    if executable('ag')
-        " Use ag over grep
-        set grepprg=ag\ --nogroup\ --nocolor
+"NOTE: this repo has been depreciated
+"Plugin 'rking/ag.vim'                   "super fast search - silver Searcher
+"    if executable('ag')
+"        " Use ag over grep
+"        set grepprg=ag\ --nogroup\ --nocolor
+"
+"        " Use ag in CtrlP for listing files. Lightning fast and respects
+"        " .gitignore
+"        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"
+"        " ag is fast enough that CtrlP doesn't need to cache
+"        let g:ctrlp_use_caching = 0
+"
+"        " don't open the quick fix window
+"        let g:Grep_OpenQuickfixWindow = 0 
+"    endif
+"
+"    " bind K to grep word under cursor
+"    nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-        " Use ag in CtrlP for listing files. Lightning fast and respects
-        " .gitignore
-        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-        " ag is fast enough that CtrlP doesn't need to cache
-        let g:ctrlp_use_caching = 0
-
-        " don't open the quick fix window
-        let g:Grep_OpenQuickfixWindow = 0 
-    endif
-
-    " bind K to grep word under cursor
-    nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+Plugin 'mileszs/ack.vim'
+    cnoreabbrev Ack Ack!
+    nnoremap <Leader>a :Ack!<Space>
 
 Plugin 'kien/ctrlp.vim'                 "search utility
     let g:ctrlp_map='<C-p>'
@@ -304,14 +313,24 @@ autocmd BufNewFile,BufRead *.handlebar set filetype=html
 autocmd BufNewFile,BufReadPost *.md,*.markdown set filetype=markdown
 autocmd FileType markdown set tw=80
 
+" adjust quickfix window to fit contents
+"au FileType qf call AdjustWindowHeight(3, 10)
+"function! AdjustWindowHeight(minheight, maxheight)
+  "exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+"endfunction
 
 
 
 
 
 """ UI Tweaks =========================
+if !has("gui_running")
+    set term=xterm
+    set t_Co=256
+    let &t_AB="\e[48;5;%dm"
+    let &t_AF="\e[38;5;%dm"
+endif
 
-set t_Co=256
 syntax enable
 set number                              " displays line numbers
 set cursorline
@@ -363,10 +382,8 @@ vnoremap <Space> zf
 " set paste toggle
 set pastetoggle=<F2>
 
+" quick fix window
+nnoremap <Leader>q :copen 20<CR>        
 
-" buffer nav
-nnoremap <C-n> :bnext<CR>
-nnoremap <C-m> :bprevious<CR>
-"nnoremap <C-w> :bdelete<CR>
 
 
