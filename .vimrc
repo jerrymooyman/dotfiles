@@ -181,6 +181,8 @@ Plugin 'tpope/vim-dispatch'             "shell out tasks
 """" UI Plugins =======================
 Plugin 'scrooloose/nerdtree'            "Sidebar file system explorer
     nnoremap FF :NERDTreeToggle<CR><leader><S-b>
+"    let g:NERDTreeDirArrowExpandable='->'
+"    let g:NERDTreeDirArrowExpandable='->'
 
 Plugin 'majutsushi/tagbar'              "Sidebar file tags
     nnoremap <F8> :TagbarToggle<CR> 
@@ -197,6 +199,8 @@ Plugin 'jlanzarotta/bufexplorer'
 	nnoremap <silent> <F11> :bn<CR>
 	nnoremap <silent> <S-F11> :bp<CR>
 
+Plugin 'jnurmine/zenburn'
+Plugin 'nanotech/jellybeans.vim'
 
 """" End UI Plugins ===================
 
@@ -324,15 +328,15 @@ autocmd FileType markdown set tw=80
 
 
 """ UI Tweaks =========================
-if !has("gui_running")
+"if !has("gui_running")
     set term=xterm
     set t_Co=256
     let &t_AB="\e[48;5;%dm"
     let &t_AF="\e[38;5;%dm"
-endif
+"endif
 
 syntax enable
-set number                              " displays line numbers
+set relativenumber                              " displays line numbers
 set cursorline
 
 set hidden                              " hides buffers instead of closing them
@@ -359,6 +363,9 @@ set nrformats=                          "treat all numbers as decimal, event wit
 
 set nobackup
 set noswapfile
+
+" this is to fix weird arrow char issue in NERDTree
+set encoding=utf-8
 
 colorscheme jellybeans
 
