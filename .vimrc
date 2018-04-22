@@ -31,19 +31,29 @@ Plugin 'gmarik/Vundle.vim'
 """" Filetypes ========================
 
 " json
-Plugin 'elzr/vim-json'
+"Plugin 'elzr/vim-json'
 
 " javascript
-Plugin 'jelera/vim-javascript-syntax'
+"Plugin 'jelera/vim-javascript-syntax'
     "let g:used_javascript_libs = 'underscore,angularjs,angularui,angularuirouter'
 
 
 Plugin 'mxw/vim-jsx'                    "React syntax highlting
     let g:jsx_ext_required = 0          "enable jsx on .js files
+    "let g:jsx_pragma_required = 1
 
+Plugin 'eagletmt/neco-ghc'
+    " Disable haskell-vim omnifunc
+    let g:haskellmode_completion_ghc = 0
+    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+    let g:ycm_semantic_triggers = {'haskell' : ['.']}
+    let g:necoghc_enable_detailed_browse = 0
+    let g:necoghc_use_stacki = 0
 
-Plugin 'othree/javascript-libraries-syntax.vim'
+"Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'pangloss/vim-javascript'
+    let g:javascript_plugin_jsdoc = 1
+    "let g:javascript_plugin_ngdoc = 1
     "let b:javascript_fold=1
     "let g:javascript_enable_domhtmlcss = 1
 
@@ -99,7 +109,7 @@ Plugin 'OmniSharp/omnisharp-vim'        "generic language
     inoremap <Nul> <C-x><C-o>
 
 
-"Plugin 'ternjs/tern_for_vim'
+Plugin 'ternjs/tern_for_vim'
 
 Plugin 'sirver/ultisnips'               "snippets
     " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -126,11 +136,12 @@ Plugin 'sirver/ultisnips'               "snippets
     let g:UltiSnipsJumpForwardTrigger="<tab>"
     let g:UltiSnipsListSnippets="<c-e>"
     let g:UltiSnipsSnippetDirectories=["UltiSnips", "my-ultisnips"]
-    let g:UltiSnipsEditSplit="vertical" " If you want :UltiSnipsEdit to split your window.
+    let g:UltiSnipsEditSplit="vertical" 
+    " If you want :UltiSnipsEdit to split your window.
     " this mapping Enter key to <C-y> to chose the current highlight item 
     " and close the selection list, same as other IDEs. 
     " CONFLICT with some plugins like tpope/Endwise
-    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 
 
@@ -170,6 +181,8 @@ Plugin 'terryma/vim-multiple-cursors'
 
 Plugin 'tpope/vim-dispatch'             "shell out tasks
 
+Plugin 'jceb/vim-orgmode'
+
 """" End Utilities ====================
 
 
@@ -195,12 +208,13 @@ Plugin 'vim-airline/vim-airline'
 
 Plugin 'jlanzarotta/bufexplorer'
 	" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
-	nnoremap <silent> <F12> :BufExplorer<CR>
+  nnoremap <silent> <S-F12> :BufExplorer<CR>
 	nnoremap <silent> <F11> :bn<CR>
 	nnoremap <silent> <S-F11> :bp<CR>
 
 Plugin 'jnurmine/zenburn'
 Plugin 'nanotech/jellybeans.vim'
+Plugin 'crusoexia/vim-monokai'
 
 """" End UI Plugins ===================
 
@@ -255,7 +269,7 @@ Plugin 'kien/ctrlp.vim'                 "search utility
     let g:ctrlp_working_path_mode = ''
     "let g:ctrlp_dont_split = 'NERD_tree_2' " don't split these buffers
     let g:ctrlp_custom_ignore = {
-        \ 'dir':  '\v[\/]\.(git|hg|svn|gitkeep)$',
+        \ 'dir':  '\v[\/](\.(git|hg|svn|gitkeep)|(node_modules))$',
         \ 'file': '\v\.(exe|so|dll|log|gif|jpg|jpeg|png|psd|DS_Store|ctags|gitattributes)$'
         \ }
         " let g:ctrlp_match_func = { 'match':
@@ -329,7 +343,7 @@ autocmd FileType markdown set tw=80
 
 """ UI Tweaks =========================
 "if !has("gui_running")
-    set term=xterm
+    set term=xterm-256color
     set t_Co=256
     let &t_AB="\e[48;5;%dm"
     let &t_AF="\e[38;5;%dm"
@@ -342,9 +356,9 @@ set cursorline
 set hidden                              " hides buffers instead of closing them
 set title
 
-set tabstop=4 
-set softtabstop=4 
-set shiftwidth=4 
+set tabstop=2 
+set softtabstop=2
+set shiftwidth=2 
 set shiftround
 set expandtab 
 set smarttab
@@ -367,7 +381,8 @@ set noswapfile
 " this is to fix weird arrow char issue in NERDTree
 set encoding=utf-8
 
-colorscheme jellybeans
+"colorscheme jellybeans
+colorscheme monokai
 
 """ Other Tweaks =====================
 
