@@ -21,7 +21,7 @@
      ("melpa-stable" . "http://stable.melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (lsp-mode json-mode web-mode expand-region company-tern helm-ag ag ace-window avy solarized-theme smart-mode-line-powerline-theme smart-mode-line xref-js2 js2-refactor js2-mode evil-commentary helm-projectile helm use-package linum-relative dashboard flycheck-haskell flycheck projectile org magit evil-leader))))
+    (all-the-icons neotree elpy lsp-mode json-mode web-mode expand-region company-tern helm-ag ag ace-window avy solarized-theme smart-mode-line-powerline-theme smart-mode-line xref-js2 js2-refactor js2-mode evil-commentary helm-projectile helm use-package linum-relative dashboard flycheck-haskell flycheck projectile org magit evil-leader))))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -68,13 +68,10 @@
 (setq evil-want-C-u-scroll t)
 
 ; Use evil mode
-(use-package evil
+(use-package evil-mode
   :init
   (evil-mode t)
-)
-
-;; (load-user-file "appearance.el")
-
+  
 ; Bind escape to quit minibuffers
 (defun minibuffer-keyboard-quit ()
     "Abort recursive edit.
@@ -94,6 +91,10 @@
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 (global-set-key [escape] 'evil-exit-emacs-state)
+)
+
+;; (load-user-file "appearance.el")
+
 
 ;; ========== SYSTEM LEVEL CONFIGS (END) ==========================================
 
@@ -108,10 +109,17 @@
 
 ;;;;Org mode configuration
 ;; Enable Org mode
-(require 'org)
-;; Make Org mode work with files ending in .org
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-;; The above is the default in recent emacsen
+(use-package org
+  :init
+  ;; Make Org mode work with files ending in .org
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  ;; The above is the default in recent emacsen
+
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-cb" 'org-switchb))
+
 
 ;;(setq flycheck-executable-find
 ;;      (lambda (cmd) (direnv-update-environment default-directory)(executable-find cmd)))
@@ -168,6 +176,15 @@
 (use-package expand-region
   :init
   (global-set-key (kbd "C-=") 'er/expand-region))
+
+;; used by neotree
+;; (use-package all-the-icons)
+
+(use-package neotree
+  :init
+  ;; (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (global-set-key [f8] 'neotree-toggle))
+
 
 ;; ========== PLUGINS (END) =======================================================
 
@@ -231,6 +248,9 @@
 (define-key tern-mode-keymap (kbd "M-.") nil)
 (define-key tern-mode-keymap (kbd "M-,") nil)
 
+;; python
+(elpy-enable)
+
 
 
 
@@ -291,9 +311,9 @@
 
 
 
-(add-to-list 'load-path "/Users/jmooyman/repos/public/lsp-haskell")
-(add-to-list 'load-path "/Users/jmooyman/repos/public/lsp-mode")
-(add-to-list 'load-path "/Users/jmooyman/repos/public/lsp-ui")
+(add-to-list 'load-path "/home/jmooyman/repos/public/lsp-haskell")
+(add-to-list 'load-path "/home/jmooyman/repos/public/lsp-mode")
+(add-to-list 'load-path "/home/jmooyman/repos/public/lsp-ui")
 (require 'lsp-ui)
 (require 'lsp-haskell)
 
@@ -412,15 +432,10 @@
 
 ;; window customisation
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(frame-background-mode (quote dark)))
 
-(add-to-list 'custom-theme-load-path "/Users/jmooyman/repos/public/blackboard-theme/")
-(add-to-list 'custom-theme-load-path "/Users/jmooyman/repos/public/emacs-color-theme-solarized/")
+
+(add-to-list 'custom-theme-load-path "/home/jmooyman/repos/public/blackboard-theme/")
+(add-to-list 'custom-theme-load-path "/home/jmooyman/repos/public/emacs-color-theme-solarized/")
 (load-theme 'solarized t)
 
 ;; Disable the splash screen (to enable it agin, replace the t with 0)
