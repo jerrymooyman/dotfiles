@@ -23,7 +23,7 @@
     ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default)))
  '(package-selected-packages
    (quote
-    (all-the-icons neotree expand-region ace-window helm-projectile projectile helm-ag ag helm dashboard linum-relative evil-leader evil-commentary evil use-package))))
+    (js2-mode jsx-mode web-mode elpy all-the-icons neotree expand-region ace-window helm-projectile projectile helm-ag ag helm dashboard linum-relative evil-leader evil-commentary evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -36,12 +36,23 @@
 ;; ========== SYSTEM LEVEL CONFIGS ================================================
 ;; ================================================================================
 
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(setq exec-path (append exec-path '("/usr/local/bin")))
+(unless (package-installed-p 'exec-path-from-shell)
+  (package-refresh-contents)
+    (package-install 'use-package))
+
+(use-package package-refresh-contents
+  :config
+  
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+)
+
+;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/:/home/jerry/.nvm/versions/node/v8.9.4/bin/"))
+;;(setq exec-path (append exec-path '("/usr/local/bin/:/home/jerry/.nvm/versions/node/v8.9.4/bin/")))
 
 
 
-;; ========== SYSTEM LEVEL CONFIGS (END) ==========================================
+;; ========== System LEVEL CONFIGS (END) ==========================================
 
 
 
@@ -140,6 +151,7 @@
 
 (use-package evil
   :init
+  (setq evil-want-C-u-scroll t)
   (evil-mode t)
   :config
   ; Use C-u for scrolling up
@@ -274,8 +286,22 @@
   (global-set-key [f8] 'neotree-toggle))
 
 
+(unless (package-installed-p 'company)
+  (package-refresh-contents)
+  (package-install 'company)
+  (package-install 'company-tooltip-align-annotations))
+
+(use-package company
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+
 
 ;; ========== PLUGINS (END) =======================================================
+
+
+;; ================================================================================                              
+;; ========== PROGRAMMING STUFF ===================================================
+;; ================================================================================
 
 ;; ========== python ==============================================================
 (unless (package-installed-p 'elpy)
@@ -287,9 +313,65 @@
   (elpy-enable))
 
 
-;; ================================================================================                              
-;; ========== PROGRAMMING STUFF ===================================================
-;; ================================================================================
+;; ========== JavaScript ==========================================================
+
+(unless (package-installed-p 'web-mode)
+  (package-refresh-contents)
+  (package-install 'web-mode)
+  (package-install 'jsx-mode)
+  (package-install 'js2-mode))
+
+(use-package tide
+  :ensure t
+  :config
+  ;; set node executable
+  (setq tide-node-executable "/home/jerry/.nvm/versions/node/v8.9.4/bin")
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook #'setup-tide-mode))
+
+
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+(use-package web
+  :init
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+	    (lambda ()
+	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
+		(setup-tide-mode))))
+
+  ;; enable typescript-tslint checker
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
+
+(use-package js2
+  :init
+  (add-hook 'js2-mode-hook #'setup-tide-mode)
+  ;; configure javascript-tide checker to run after your default javascript checker
+  (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append))
+
+(use-package jsx
+  :init
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+	    (lambda ()
+	      (when (string-equal "jsx" (file-name-extension buffer-file-name))
+		(setup-tide-mode))))
+  ;; configure jsx-tide checker to run after your default jsx checker
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append))
 
 
 
