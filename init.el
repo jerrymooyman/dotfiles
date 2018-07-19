@@ -391,24 +391,19 @@
 	     'hbar)
 
 (menu-bar-mode -1)
-
 (tool-bar-mode -1)
-
 (scroll-bar-mode -1)
-
 (column-number-mode)
-
 (show-paren-mode)
-
 (electric-pair-mode)
-
 (global-hl-line-mode t)
-
 (ido-mode t)
-
 (winner-mode t)
-
 (windmove-default-keybindings)
+(setq ring-bell-function 'ignore)
+(setq-default indent-tabs-mode nil)
+
+
 
 ;; window customisation
 
