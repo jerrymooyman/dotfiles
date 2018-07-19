@@ -1,4 +1,18 @@
+(setq inhibit-startup-message t)
+
 (require 'package)
+(setq package-enable-at-startup nil)
+;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
+(package-initialize)
+
+
+(unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+      (package-install 'use-package))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -6,365 +20,39 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
- '(frame-background-mode (quote dark))
- '(haskell-check-command "hlint")
- '(haskell-mode-hook
-   (quote
-    (haskell-indent-mode highlight-uses-mode imenu-add-menubar-index interactive-haskell-mode turn-on-haskell-indentation turn-on-haskell-doc-mode)))
- '(haskell-stylish-on-save t)
- '(js2-strict-missing-semi-warning nil)
- '(linum-relative-current-symbol "")
- '(package-archives
-   (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa-stable" . "http://stable.melpa.org/packages/"))))
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default)))
  '(package-selected-packages
    (quote
-    (lsp-mode json-mode web-mode expand-region company-tern helm-ag ag ace-window avy solarized-theme smart-mode-line-powerline-theme smart-mode-line xref-js2 js2-refactor js2-mode evil-commentary helm-projectile helm use-package linum-relative dashboard flycheck-haskell flycheck projectile org magit evil-leader))))
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+    (js2-mode jsx-mode web-mode elpy all-the-icons neotree expand-region ace-window helm-projectile projectile helm-ag ag helm dashboard linum-relative evil-leader evil-commentary evil use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 
 ;; ================================================================================
 ;; ========== SYSTEM LEVEL CONFIGS ================================================
 ;; ================================================================================
 
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(setq exec-path (append exec-path '("/usr/local/bin")))
+(unless (package-installed-p 'exec-path-from-shell)
+  (package-refresh-contents)
+    (package-install 'use-package))
 
-(defconst user-init-dir
-  (cond ((boundp 'user-emacs-directory)
-         user-emacs-directory)
-        ((boundp 'user-init-directory)
-         user-init-directory)
-        (t "~/.emacs.d/")))
-
-
-(defun load-user-file (file)
-  (interactive "f")
-  "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file user-init-dir)))  (cond ((boundp 'user-emacs-directory)
-         user-emacs-directory)
-        ((boundp 'user-init-directory)
-         user-init-directory)
-        (t "~/.emacs.d/"))
-
-
-(defun load-user-file (file)
-  (interactive "f")
-  "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file user-init-dir)))
-
-;; ; Load configuration modules
-;; (load-user-file "evil.el")
-
-; Configure evil mode
-; Use C-u for scrolling up
-(setq evil-want-C-u-scroll t)
-
-; Use evil mode
-(use-package evil
-  :init
-  (evil-mode t)
+(use-package package-refresh-contents
+  :config
+  
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
 )
 
-;; (load-user-file "appearance.el")
+;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/:/home/jerry/.nvm/versions/node/v8.9.4/bin/"))
+;;(setq exec-path (append exec-path '("/usr/local/bin/:/home/jerry/.nvm/versions/node/v8.9.4/bin/")))
 
-; Bind escape to quit minibuffers
-(defun minibuffer-keyboard-quit ()
-    "Abort recursive edit.
-  In Delete Selection mode, if the mark is active, just deactivate it;
-  then it takes a second \\[keyboard-quit] to abort the minibuffer."
-    (interactive)
-    (if (and delete-selection-mode transient-mark-mode mark-active)
-	(setq deactivate-mark  t)
-      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-      (abort-recursive-edit)))
 
-(define-key evil-normal-state-map [escape] 'keyboard-quit)
-(define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-(global-set-key [escape] 'evil-exit-emacs-state)
 
-;; ========== SYSTEM LEVEL CONFIGS (END) ==========================================
-
-
-;; Enable transient mark mode
-(transient-mark-mode 1)
-
-
-;; ================================================================================
-;; ========== PLUGINS =============================================================
-;; ================================================================================
-
-;;;;Org mode configuration
-;; Enable Org mode
-(require 'org)
-;; Make Org mode work with files ending in .org
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-;; The above is the default in recent emacsen
-
-;;(setq flycheck-executable-find
-;;      (lambda (cmd) (direnv-update-environment default-directory)(executable-find cmd)))
-;;(global-flycheck-mode)
-(use-package dashboard
-  :init
-  (dashboard-setup-startup-hook)
-  (setq dashboard-items '((recents  . 20)
-			  (bookmarks . 5)
-			  (projects . 5)
-			  (agenda . 5)
-			  (registers . 5))))
-
-(use-package evil-commentary
-  :init
-  (evil-commentary-mode))
-
-(with-eval-after-load 'evil-maps
-  (define-key evil-normal-state-map (kbd "M-.") nil))
-
-(use-package linum-relative
-  :init
-  (linum-relative-toggle)
-  (global-linum-mode 1)
-  (setq linum-relative-backend 'display-line-numbers-mode))
-
-(use-package helm
-  :init
-  (global-set-key (kbd "C-c h") 'helm-mini)
-  :config
-  (use-package helm-config))
-
-
-(use-package projectile
-  :init
-  (projectile-mode t)
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :config
-  (use-package helm-projectile
-    :init
-    (helm-projectile-on)))
-
-(use-package avy
-  :init
-  (global-set-key (kbd "C-;") 'avy-goto-word-or-subword-1)
-  (global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
-  (global-set-key (kbd "s-w") 'ace-window))
-
-(use-package ace-window
-  :init
-  (global-set-key (kbd "M-o") 'ace-window))
-
-(use-package expand-region
-  :init
-  (global-set-key (kbd "C-=") 'er/expand-region))
-
-;; ========== PLUGINS (END) =======================================================
-
-
-
-
-;; ================================================================================
-;; ========== PROGRAMMING LANGUAGES ===============================================
-;; ================================================================================
-
-
-;; ========== JavaScript ==========================================================
-
-(use-package web-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-
-  ;; for better jsx syntax-highlighting in web-mode
-  ;; - courtesy of Patrick @halbtuerke
-  (defadvice web-mode-highlight-part (around tweak-jsx activate)
-    (if (equal web-mode-content-type "jsx")
-      (let ((web-mode-enable-part-face nil))
-      ad-do-it)
-      ad-do-it)))
-
-
-(use-package js2-mode
-  :init
-  (setq js-indent-level 2)
-  :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (setq js2-pretty-multiline-declarations nil)
-  ;; better imenu
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
-
-
-(require 'js2-refactor)
-(require 'xref-js2)
-
-(add-hook 'js2-mode-hook #'js2-refactor-mode)
-(js2r-add-keybindings-with-prefix "C-c C-r")
-(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
-;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
-;; unbind it.
-(define-key js-mode-map (kbd "M-.") nil)
-
-(add-hook 'js2-mode-hook (lambda ()
-  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-
-
-(require 'company)
-(require 'company-tern)
-
-(add-to-list 'company-backends 'company-tern)
-(add-hook 'js2-mode-hook (lambda ()
-                           (tern-mode)
-                           (company-mode)))
-                           
-;; Disable completion keybindings, as we use xref-js2 instead
-(define-key tern-mode-keymap (kbd "M-.") nil)
-(define-key tern-mode-keymap (kbd "M-,") nil)
-
-
-
-
-;; ========== Haskell =============================================================
-
-;; (eval-after-load 'flycheck
-;;   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
-(use-package haskell-mode
-  :init
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-
-  ;; hslint on the command line only likes this indentation mode;
-  ;; alternatives commented out below.
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-  ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
-
-  ;; Ignore compiled Haskell files in filename completions
-  (add-to-list 'completion-ignored-extensions ".hi"))
-
-(defun flymake-haskell-init ()
-  "When flymake triggers, generates a tempfile containing the
-  contents of the current buffer, runs `hslint` on it, and
-  deletes file. Put this file path (and run `chmod a+x hslint`)
-  to enable hslint: https://gist.github.com/1241073"
-  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-         (local-file  (file-relative-name
-                       temp-file
-                       (file-name-directory buffer-file-name))))
-    (list "hslint" (list local-file))))
-
-(defun flymake-haskell-enable ()
-  "Enables flymake-mode for haskell, and sets <C-c d> as command
-  to show current error."
-  (when (and buffer-file-name
-             (file-writable-p
-              (file-name-directory buffer-file-name))
-             (file-writable-p buffer-file-name))
-    (local-set-key (kbd "C-c d") 'flymake-display-err-menu-for-current-line)
-    (flymake-mode t)))
-
-;; Forces flymake to underline bad lines, instead of fully
-;; highlighting them; remove this if you prefer full highlighting.
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flymake-errline ((((class color)) (:underline "red"))))
- '(flymake-warnline ((((class color)) (:underline "yellow")))))
-
-;; (load-user-file "hs-lint.el")
-;; (defun my-haskell-mode-hook ()
-;;     (local-set-key "\C-cl" 'hs-lint))
-;; (add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
-
-
-
-(add-to-list 'load-path "/Users/jmooyman/repos/public/lsp-haskell")
-(add-to-list 'load-path "/Users/jmooyman/repos/public/lsp-mode")
-(add-to-list 'load-path "/Users/jmooyman/repos/public/lsp-ui")
-(require 'lsp-ui)
-(require 'lsp-haskell)
-
-;; (lsp-define-stdio-client
-;;  ;; This can be a symbol of your choosing. It will be used as a the
-;;  ;; prefix for a dynamically generated function "-enable"; in this
-;;  ;; case: lsp-prog-major-mode-enable
-;;  lsp-prog-major-mode
-;;  "language-id"
-;;  ;; This will be used to report a project's root directory to the LSP
-;;  ;; server.
-;;  (lambda () default-directory)
-;;  ;; This is the command to start the LSP server. It may either be a
-;;  ;; string containing the path of the command, or a list wherein the
-;;  ;; car is a string containing the path of the command, and the cdr
-;;  ;; are arguments to that command.
-;;  '("/my/lsp/server" "and" "args"))
-
-;; ;; Here we'll add the function that was dynamically generated by the
-;; ;; call to lsp-define-stdio-client to the major-mode hook of the
-;; ;; language we want to run it under.
-;; ;;
-;; ;; This function will turn lsp-mode on and call the command given to
-;; ;; start the LSP server.
-;; (add-hook 'prog-major-mode #'lsp-prog-major-mode-enable)
-
-
-;; (require 'lsp-ui)
-;; (require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(add-hook 'haskell-mode-hook #'lsp-haskell-enable)
-(add-hook 'haskell-mode-hook 'flycheck-mode)
-
-
-
-
-;; ========== Checkers & Linters ==================================================
-(require 'flycheck)
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-(append flycheck-disabled-checkers '(javascript-jshint)))
-
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-(append flycheck-disabled-checkers '(json-jsonlist)))
-
-;; use local eslint from node_modules before global
-;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
-(defun my/use-eslint-from-node-modules ()
-(let* ((root (locate-dominating-file
-	    (or (buffer-file-name) default-directory)
-	    "node_modules"))
-	(eslint (and root
-		    (expand-file-name "node_modules/eslint/bin/eslint.js"
-				    root))))
-(when (and eslint (file-executable-p eslint))
-    (setq-local flycheck-javascript-eslint-executable eslint))))
-(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
-
-
-
-;; ========== PROGRAMMING LANGUAGES (END) =========================================
+;; ========== System LEVEL CONFIGS (END) ==========================================
 
 
 
@@ -372,24 +60,9 @@
 ;; ========== LOOK AND FEEL =======================================================
 ;; ================================================================================
 
-;; powerline these (c/o smart-mode-line)
-(use-package smart-mode-line
-  :init
-  ;; These two lines are just examples
-  (setq powerline-arrow-shape 'curve)
-  (setq powerline-default-separator-dir '(right . left))
-  ;; These two lines you really need.
-  (setq sml/theme 'respectful)
-  (sml/setup))
-
-(set-face-attribute 'default nil :height 120)
-
-
-;; configure the appearance
-
+;; ========== custom settings =====================================================
 (set-default 'cursor-type
-	     'hbar)
-
+  'hbar)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -400,39 +73,307 @@
 (ido-mode t)
 (winner-mode t)
 (windmove-default-keybindings)
-(setq ring-bell-function 'ignore)
-(setq-default indent-tabs-mode nil)
 
+;; Enable transient mark mode
+(transient-mark-mode 1)
 
+;; ========== solarized-theme =====================================================
+(unless (package-installed-p 'solarized-theme)
+  (package-refresh-contents)
+  (package-install 'solarized-theme))
 
-;; window customisation
+(use-package solarized-theme
+  :init
+  ;; make the fringe stand out from the background
+  (setq solarized-distinct-fringe-background t)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(frame-background-mode (quote dark)))
+  ;; Don't change the font for some headings and titles
+  (setq solarized-use-variable-pitch nil)
 
-(add-to-list 'custom-theme-load-path "/Users/jmooyman/repos/public/blackboard-theme/")
-(add-to-list 'custom-theme-load-path "/Users/jmooyman/repos/public/emacs-color-theme-solarized/")
-(load-theme 'solarized t)
+  ;; make the modeline high contrast
+;  (setq solarized-high-contrast-mode-line t)
 
-;; Disable the splash screen (to enable it agin, replace the t with 0)
-(setq inhibit-splash-screen t)
+  ;; Use less bolding
+  (setq solarized-use-less-bold t)
 
-; Set cursor colors depending on mode
-(when (display-graphic-p)
-  (setq evil-emacs-state-cursor '("red" box))
-  (setq evil-normal-state-cursor '("green" box))
-  (setq evil-visual-state-cursor '("orange" box))
-  (setq evil-insert-state-cursor '("red" bar))
-  (setq evil-replace-state-cursor '("red" bar))
-  (setq evil-operator-state-cursor '("red" hollow))
+  ;; Use more italics
+  (setq solarized-use-more-italic t)
+
+  ;; Use less colors for indicators such as git:gutter, flycheck and similar
+  (setq solarized-emphasize-indicators nil)
+
+  ;; Don't change size of org-mode headlines (but keep other size-changes)
+  (setq solarized-scale-org-headlines nil)
+
+  ;; Avoid all font-size changes
+  (setq solarized-height-minus-1 1.0)
+  (setq solarized-height-plus-1 1.0)
+  (setq solarized-height-plus-2 1.0)
+  (setq solarized-height-plus-3 1.0)
+  (setq solarized-height-plus-4 1.0)
+  :config
+  (load-theme 'solarized-dark t)
 )
+
+(unless (package-installed-p 'smart-mode-line)
+  (package-refresh-contents)
+  (package-install 'smart-mode-line)
+  (package-install 'smart-mode-line-powerline-theme))
+
+(use-package smart-mode-line
+  :init
+  ;; These two lines are just examples
+  (setq powerline-arrow-shape 'curve)
+  (setq powerline-default-separator-dir '(right . left))
+  ;; These two lines you really need.
+  (setq sml/theme 'respectful)
+  (sml/setup))  
+  :config
+;  (set-face-attribute 'default nil :height 120)
+
 
 ;; ========== LOOK AND FEEL (END) =================================================
 
 
-;;; (provide 'init)
-;;; init.el ends here
+
+;; ================================================================================
+;; ========== PLUGINS =============================================================
+;; ================================================================================
+
+
+;; ========== evil-mode ===========================================================
+(unless (package-installed-p 'evil)
+  (package-refresh-contents)
+  (package-install 'evil)
+  (package-install 'evil-commentary)
+  (package-install 'evil-leader)
+  (package-install 'linum-relative))
+
+(use-package evil
+  :init
+  (setq evil-want-C-u-scroll t)
+  (evil-mode t)
+  :config
+  ; Use C-u for scrolling up
+  (setq evil-want-C-u-scroll t)
+
+  ; Bind escape to quit minibuffers
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.  In Delete Selection mode, if the mark is active, just deactivate it;
+    then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+    (setq deactivate-mark  t)
+    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+    (abort-recursive-edit)))
+    
+  (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+  (global-set-key [escape] 'evil-exit-emacs-state)
+
+  (use-package evil-commentary
+    :init
+    (evil-commentary-mode))
+    :config
+    (with-eval-after-load 'evil-maps
+    (define-key evil-normal-state-map (kbd "M-.") nil))
+
+  (use-package linum-relative
+    :init
+    (linum-relative-toggle)
+    (global-linum-mode 1)
+    :config
+    (setq linum-relative-backend 'display-line-numbers-mode))
+  
+  ; Set cursor colors depending on mode
+  (when (display-graphic-p)
+    (setq evil-emacs-state-cursor '("red" box))
+    (setq evil-normal-state-cursor '("green" box))
+    (setq evil-visual-state-cursor '("orange" box))
+    (setq evil-insert-state-cursor '("red" bar))
+    (setq evil-replace-state-cursor '("red" bar))
+    (setq evil-operator-state-cursor '("red" hollow)))
+
+) 
+
+;; ========== dashboard ===========================================================
+(unless (package-installed-p 'dashboard)
+  (package-refresh-contents)
+  (package-install 'dashboard))
+
+(use-package dashboard
+  :init
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents  . 20)
+  (bookmarks . 5)
+  (projects . 5)
+  (agenda . 5)
+  (registers . 5))))
+
+;; ========== helm/projectile ====================================================
+(unless (package-installed-p 'helm)
+  (package-refresh-contents)
+  (package-install 'helm)
+;  (package-install 'helm-config)
+  (package-install 'ag)
+  (package-install 'helm-ag)
+  (package-install 'projectile)
+  (package-install 'helm-projectile))
+
+(use-package helm
+  :init
+  (global-set-key (kbd "C-c h") 'helm-mini)
+  :config
+  (use-package helm-config))
+  (use-package projectile
+    :init
+    (projectile-mode t)
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :config
+    (use-package helm-projectile
+      :init
+      (helm-projectile-on)))
+
+
+
+;; ========== avy/ace-window/etc =================================================
+(unless (package-installed-p 'ace-window)
+  (package-refresh-contents)
+  (package-install 'ace-window))
+
+(use-package ace-window
+  :init
+  (global-set-key (kbd "M-o") 'ace-window))
+
+
+(unless (package-installed-p 'avy)
+  (package-refresh-contents)
+  (package-install 'avy))
+
+(use-package avy
+  :init
+  (global-set-key (kbd "C-;") 'avy-goto-word-or-subword-1)
+  (global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
+  (global-set-key (kbd "s-w") 'ace-window))
+
+
+(unless (package-installed-p 'expand-region)
+  (package-refresh-contents)
+  (package-install 'expand-region))
+
+(use-package expand-region
+  :init
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+
+;; used by neotree
+;; (use-package all-the-icons)
+(unless (package-installed-p 'neotree)
+  (package-refresh-contents)
+  (package-install 'neotree)
+  (package-install 'all-the-icons)
+  (all-the-icons-install-fonts t))
+
+(use-package neotree
+  :init
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (global-set-key [f8] 'neotree-toggle))
+
+
+(unless (package-installed-p 'company)
+  (package-refresh-contents)
+  (package-install 'company)
+  (package-install 'company-tooltip-align-annotations))
+
+(use-package company
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+
+
+;; ========== PLUGINS (END) =======================================================
+
+
+;; ================================================================================                              
+;; ========== PROGRAMMING STUFF ===================================================
+;; ================================================================================
+
+;; ========== python ==============================================================
+(unless (package-installed-p 'elpy)
+  (package-refresh-contents)
+  (package-install 'elpy))
+
+(use-package elpy
+  :init
+  (elpy-enable))
+
+
+;; ========== JavaScript ==========================================================
+
+(unless (package-installed-p 'web-mode)
+  (package-refresh-contents)
+  (package-install 'web-mode)
+  (package-install 'jsx-mode)
+  (package-install 'js2-mode))
+
+(use-package tide
+  :ensure t
+  :config
+  ;; set node executable
+  (setq tide-node-executable "/home/jerry/.nvm/versions/node/v8.9.4/bin")
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook #'setup-tide-mode))
+
+
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+(use-package web
+  :init
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+	    (lambda ()
+	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
+		(setup-tide-mode))))
+
+  ;; enable typescript-tslint checker
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
+
+(use-package js2
+  :init
+  (add-hook 'js2-mode-hook #'setup-tide-mode)
+  ;; configure javascript-tide checker to run after your default javascript checker
+  (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append))
+
+(use-package jsx
+  :init
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+	    (lambda ()
+	      (when (string-equal "jsx" (file-name-extension buffer-file-name))
+		(setup-tide-mode))))
+  ;; configure jsx-tide checker to run after your default jsx checker
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append))
+
+
+;; ========== ROGRAMMING STUFF (END) ==============================================                            
+
+

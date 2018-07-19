@@ -1,8 +1,8 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
+ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -76,10 +76,31 @@ export EDITOR='vim'
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
+
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias subl="subl3"
+
+# git
+alias gcw="gc -m 'WORK IN PROGRESS'"
+
+# python virtual env
+alias venva="source venv/bin/activate"
+alias venvd="deactivate"
+alias enva="source env/bin/activate"
+alias envd="deactivate"
+
+# react native
+alias rns="react-native start"
+alias rna="react-native run-android"
+alias rni="react-native run-ios"
+
+# gradle
+alias gw="./gradlew"
+
+# aws
+#alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"
+alias lecr="eval $(aws ecr get-login --region ap-southeast-2 --profile rescd)"
 
 ZSH_CACHE_DIR=$HOME/.oh-my-zsh-cache
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
@@ -96,3 +117,24 @@ autoload -Uz promptinit
 promptinit
 
 source $ZSH/oh-my-zsh.sh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# java stuff
+#export JAVA_HOME=/usr/java/jdk1.8.0_171-amd64
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+# android stuff
+ANDROID_HOME=$HOME/Android/Sdk
+ANDROID_TOOLS=$ANDROID_HOME/tools
+ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME:$ANDROID_TOOLS:$ANDROID_PLATFORM_TOOLS
+
+
+# flutter stuff
+export PATH=$HOME/development/flutter/bin:$PATH
+
+
+

@@ -407,5 +407,5 @@ set pastetoggle=<F2>
 " quick fix window
 nnoremap <Leader>q :copen 20<CR>        
 
-
+set clipboard=unnamedplus
 
