@@ -212,6 +212,7 @@ Plugin 'jlanzarotta/bufexplorer'
 	nnoremap <silent> <F11> :bn<CR>
 	nnoremap <silent> <S-F11> :bp<CR>
 
+Plugin 'herrbischoff/cobalt2.vim'
 Plugin 'jnurmine/zenburn'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'crusoexia/vim-monokai'
@@ -382,7 +383,8 @@ set noswapfile
 set encoding=utf-8
 
 "colorscheme jellybeans
-colorscheme monokai
+"colorscheme monokai
+colorscheme cobalt2
 
 """ Other Tweaks =====================
 

@@ -10,9 +10,8 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-" Plugins will go here in the middle.
 
-
+"=========== Search ============================================
 " fuzzy search
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug '/usr/local/opt/fzf'
@@ -20,44 +19,67 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
+" file search
+Plug 'rking/ag.vim'
 " https://github.com/junegunn/fzf#using-homebrew-or-linuxbrew
 " https://github.com/junegunn/fzf/blob/master/README-VIM.md
 
-" file/directory navigator
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
-" file search
-Plug 'rking/ag.vim'
+"=========== Files / Directories ===============================
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
 Plug 'easymotion/vim-easymotion'
 
 Plug 'scrooloose/nerdcommenter'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'ervandew/supertab'
 
+"=========== Source Control ====================================
 Plug 'airblade/vim-gitgutter'
-"Plug 'tpope/vim-fugitive'
 Plug 'jreybert/vimagit'
 
-" linting
-Plug 'neomake/neomake'
+
+"=========== Programming languages =============================
 
 Plug 'neovimhaskell/haskell-vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': './install.sh'
+    \ }
+" ref: https://fortes.com/2017/language-server-neovim/
+
+"Plug 'bitc/hdevtools'
 
 Plug 'zchee/deoplete-jedi'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+
+
+"=========== Linters / Checkers ================================
+" https://github.com/w0rp/ale#faq-disable-linters
 Plug 'w0rp/ale'
 
+"Plug 'neomake/neomake'
+"Plug 'vim-syntastic/syntastic'
+
+
+
+"=========== Autocompleter =====================================
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'roxma/nvim-completion-manager'   // repo has been archived
+"Plug 'ervandew/supertab'   //has clash with other plugins
+
+
+
+
+"=========== Themes ============================================
+Plug 'herrbischoff/cobalt2.vim'
+Plug 'trevordmiller/nova-vim'
+Plug 'jnurmine/Zenburn'
+Plug 'vim-scripts/Solarized'
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 
-" theme
-Plug 'herrbischoff/cobalt2.vim'
-Plug 'trevordmiller/nova-vim'
-Plug 'jnurmine/Zenburn'
 
 call plug#end()
 
@@ -67,14 +89,19 @@ let mapleader = ";"
 syntax on
 
 " theme
-set t_Co=256
-" set background=dark
+set t_co=256
+"set background=light
+set background=dark
 "colorscheme nova
-"colorscheme cobalt2
 "colorscheme gruvbox
-colorscheme zenburn
+"colorscheme zenburn
+"
+"colorscheme cobalt2
+colorscheme solarized
 
 "let g:airline_theme = "zenburn"
+"let g:airline_theme = "cobalt2"
+let g:airline_theme = "solarized"
 
 
 
@@ -82,14 +109,12 @@ colorscheme zenburn
 nnoremap <leader>d :bd<CR>
 " close all buffers
 nnoremap <leader>D :%bd<CR>
+" list buffers
+nnoremap <Leader>b :Buffers<CR>
 
 " vert split
 nnoremap <leader>v :vs<CR>
 
-"" load plugins
-"if filereadable(expand("~/.vimrc.plugins"))
-  "source ~/.vimrc.plugins
-"endif
 
 " required to detect filetype
 filetype plugin indent on
@@ -119,6 +144,7 @@ set showmatch         " highlight matching brackets
 set autoread          " when file was changed
 set lazyredraw        " redraw only when we need to"
 set hlsearch          " highlight same words while searching with Shift + *
+set cursorline        " hightlight current line
 
 " line numbers
 set number            " show
@@ -185,7 +211,9 @@ inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
-nnoremap <C-p> :FZF<CR>
+"fuzzy search
+"nnoremap <C-p> :FZF<CR>
+nnoremap <C-p> :GFiles<CR>
 
 
 "NERDTree
@@ -199,6 +227,7 @@ let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
+let g:NERDTreeWinSize=60
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
 "NERDCommenter
@@ -214,16 +243,16 @@ set statusline+=%*
 "let g:syntastic_check_on_wq = 0
 
 "Neomake
-autocmd! BufWritePost,BufEnter * Neomake
-" When writing a buffer (no delay).
-call neomake#configure#automake('w')
-" When writing a buffer (no delay), and on normal mode changes (after 750ms).
-call neomake#configure#automake('nw', 750)
-" When reading a buffer (after 1s), and when writing (no delay).
-call neomake#configure#automake('rw', 1000)
-" Full config: when writing or reading a buffer, and on changes in insert and
-" normal mode (after 1s; no delay when writing).
-call neomake#configure#automake('nrwi', 500)
+"autocmd! BufWritePost,BufEnter * Neomake
+"" When writing a buffer (no delay).
+"call neomake#configure#automake('w')
+"" When writing a buffer (no delay), and on normal mode changes (after 750ms).
+"call neomake#configure#automake('nw', 750)
+"" When reading a buffer (after 1s), and when writing (no delay).
+"call neomake#configure#automake('rw', 1000)
+"" Full config: when writing or reading a buffer, and on changes in insert and
+"" normal mode (after 1s; no delay when writing).
+"call neomake#configure#automake('nrwi', 500)
 
 " jsx
 let g:jsx_ext_required = 0
@@ -260,7 +289,50 @@ let g:airline#extensions#branch#enabled = 1 " just nevever found it that useful 
 " easymotion
 map <Leader> <Plug>(easymotion-prefix)
 
+" checkers / linters
+"let g:neomake_javascript_enabled_makers = ['eslint']
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" Show 5 lines of errors (default: 10)
+"let g:ale_list_window_size = 5
+"let g:ale_set_loclist = 0
+"let g:ale_set_quickfix = 1
 
 
+"Haskell
+"Language Client
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'haskell': ['hie'],
+    \ }
+if executable('javascript-typescript-stdio')
+  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+  " Use LanguageServer for omnifunc completion
+  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+  autocmd FileType javascript.jsx setlocal omnifunc=LanguageClient#complete
+else
+  echo "javascript-typescript-stdio not installed!\n"
+  :cq
+endif
 
+nnoremap <silent> lm :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> lh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> ld :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> lr :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> lf :call LanguageClient#textDocument_documentSymbol()<CR>
+
+"let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
+
+
+" format JSON
+" %!python -m json.tool
+command! FormatJSON %!jq '.'
 
