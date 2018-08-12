@@ -97,11 +97,11 @@ set background=dark
 "colorscheme zenburn
 "
 "colorscheme cobalt2
-colorscheme solarized
+"colorscheme solarized
 
 "let g:airline_theme = "zenburn"
 "let g:airline_theme = "cobalt2"
-let g:airline_theme = "solarized"
+"let g:airline_theme = "solarized"
 
 
 
