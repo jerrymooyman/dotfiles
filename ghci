@@ -1,0 +1,3 @@
+let ghciEscapShellArg arg = "'" ++ concatMap (\c -> if c == '\'' then "'\"'\"'" else [c]) arg ++ "'"
+:def! search return . (":! hoogle --count=20 " ++) . ghciEscapShellArg
+:def! doc return . (":! hoogle --info " ++) . ghciEscapShellArg

@@ -91,6 +91,9 @@ alias subl="subl3"
 # git
 alias gcw="gc -m 'WORK IN PROGRESS'"
 
+# python
+alias python="python3"
+
 # python virtual env
 alias venva="source venv/bin/activate"
 alias venvd="deactivate"
@@ -119,6 +122,12 @@ alias sssh="ssh-add -K ${SSH_KEY_PATH}"
 
 # gradle
 alias gw="./gradlew"
+
+
+# notes
+alias notes="vim ~/Dropbox/notebook"
+
+
 
 # aws
 #alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"
@@ -168,6 +177,10 @@ export PATH=$HOME/development/flutter/bin:$PATH
 alias findinspectiondbs="find . -name "inspections.db" -exec ls -lh {} \;"
 
 
+# haskell ide engine
+export PATH=$HOME/.local/bin:$PATH
+#alias ghc="stack exec -- ghc"
+#alias ghc="stack ghc"
 
 
 

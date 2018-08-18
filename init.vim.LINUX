@@ -46,6 +46,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': './install.sh'
     \ }
+Plug 'alx741/vim-stylishask'
 " ref: https://fortes.com/2017/language-server-neovim/
 
 "Plug 'bitc/hdevtools'
@@ -70,6 +71,9 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'ervandew/supertab'   //has clash with other plugins
 
 
+"=========== cTags =============================================
+" https://medium.com/@kuiro5/best-way-to-set-up-ctags-with-neovim-37be99c1bd11
+Plug 'ludovicchabant/vim-gutentags'
 
 
 "=========== Themes ============================================
@@ -77,6 +81,11 @@ Plug 'herrbischoff/cobalt2.vim'
 Plug 'trevordmiller/nova-vim'
 Plug 'jnurmine/Zenburn'
 Plug 'vim-scripts/Solarized'
+Plug 'lmintmate/blue-mood-vim'
+Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
+Plug 'lifepillar/vim-solarized8'
+Plug 'ajh17/Spacegray.vim'
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
@@ -93,16 +102,15 @@ syntax on
 set t_co=256
 "set background=light
 set background=dark
-"colorscheme nova
-"colorscheme gruvbox
-"colorscheme zenburn
-
 "colorscheme cobalt2
-colorscheme solarized
+colorscheme spacegray
+"colorscheme blue-mood
+"colorscheme dracula
+"colorscheme darkblue
 
 "let g:airline_theme = "zenburn"
-"let g:airline_theme = "cobalt2"
-let g:airline_theme = "solarized"
+let g:airline_theme = "cobalt2"
+"let g:airline_theme = "solarized"
 
 
 
@@ -116,6 +124,8 @@ nnoremap <Leader>b :Buffers<CR>
 " vert split
 nnoremap <leader>v :vs<CR>
 
+" close all other windows
+nnoremap <leader>c :only<CR>
 
 " required to detect filetype
 filetype plugin indent on
@@ -145,7 +155,11 @@ set showmatch         " highlight matching brackets
 set autoread          " when file was changed
 set lazyredraw        " redraw only when we need to"
 set hlsearch          " highlight same words while searching with Shift + *
-set cursorline        " hightlight current line
+set cursorline        " hightligt current line
+"highlight clear CursorLine
+"highlight CursorLine ctermbg=grey40
+
+"hi CursorLine cterm=none gui=none
 set guicursor=        " ignore unknown CSI sequences
 
 " line numbers
@@ -201,6 +215,7 @@ hi LineNr ctermfg=240 guifg=#585858
 "nnoremap <C-p> :FZF<CR>
 nnoremap <C-p> :GFiles<CR>
 
+"nnoremap <C-l> :call fzf#vim#tags({'options': '-q '.shellescape(expand('<cword>'))})
 
 " Visuals: airline
 let g:airline_left_sep = ''
@@ -236,6 +251,8 @@ let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize=60
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
+"Show hidden files in NERDTree
+let NERDTreeShowHidden=1
 
 
 "NERDCommenter
@@ -250,7 +267,10 @@ let g:jsx_ext_required = 0
 
 
 
+"=====================================================================
 "===========  Programming Stuff ===============================
+"=====================================================================
+
 
 
 "Checkers / linters
@@ -264,9 +284,35 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 "let g:ale_list_window_size = 5
 "let g:ale_set_loclist = 0
 "let g:ale_set_quickfix = 1
+" \cc
+map <Leader>co :cwindow<CR>:cc<CR><c-w>bz<CR><CR>
+" \cn
+map <Leader>cn :cwindow<CR>:cn<CR><c-w>bz<CR><CR>
+" \cp
+map <Leader>cp :cwindow<CR>:cp<CR><c-w>bz<CR><CR>
+" \cl
+map <Leader>cl :cwindow<CR>:ccl<CR>
 
 
-"Haskell
+
+
+"Deoplete
+let g:deoplete#enable_at_startup = 1
+" use tab to forward cycle
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" use tab to backward cycle
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" Close the documentation window when completion is done
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+
+
+"=====================================================================
+"=== Haskell =========================================================
+"=====================================================================
+
+
+"haskell-vim
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
@@ -275,13 +321,68 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
+let g:haskell_classic_highlighting = 1
+let g:haskell_indent_if = 3
+let g:haskell_indent_case = 2
+let g:haskell_indent_let = 4
+let g:haskell_indent_where = 6
+let g:haskell_indent_before_where = 2
+let g:haskell_indent_after_bare_where = 2
+let g:haskell_indent_do = 3
+let g:haskell_indent_in = 1
+let g:haskell_indent_guard = 2
+let g:haskell_indent_case_alternative = 1
+let g:cabal_indent_section = 2
 
 
 
+"Language Client
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'haskell': ['hie'],
+    \ }
+if executable('javascript-typescript-stdio')
+  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+  " Use LanguageServer for omnifunc completion
+  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+  autocmd FileType javascript.jsx setlocal omnifunc=LanguageClient#complete
+else
+  echo "javascript-typescript-stdio not installed!\n"
+  ":cq
+endif
+
+nnoremap <silent> lm :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> lh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> ld :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> lr :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> lf :call LanguageClient#textDocument_documentSymbol()<CR>
+
+let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
 
 
 
+"=====================================================================
 
+
+"=====================================================================
+"=== tags (vim-gutentags')
+"=====================================================================
+command! Gentags !fast-tags . -R
+
+
+" format JSON
+" %!python -m json.tool
+command! FormatJSON %!jq '.'
+
+" this is to set auto test wrapping of quickfix window
+augroup quickfix
+  autocmd!
+  autocmd FileType qf setlocal wrap
+augroup END
 
 
 
