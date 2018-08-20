@@ -90,7 +90,7 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'ajh17/Spacegray.vim'
 "Plug 'ajmwagar/vim-deus'
 "Plug 'andreasvc/vim-256noir'
-"Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'mhartington/oceanic-next'
 
 Plug 'vim-airline/vim-airline-themes'
@@ -102,10 +102,11 @@ call plug#end()
 let mapleader = ";"
 
 " enable syntax highlighting
-"syntax on
-syntax enable
+"syntax enable
 
 " theme
+" NOTE: theme is configured by terminal
+" ref: https://github.com/ghuntley/terminator-solarized
 
 "set t_co=256
 "set t_8f=^[[38;2;%lu;%lu;%lum
@@ -116,17 +117,22 @@ syntax enable
  "set termguicolors
 "endif
 
+set t_co=265
+syntax on
+let g:solarized_termcolors=16
+set background=dark
 "set background=light
-"set background=dark
+colorscheme solarized
+"colorscheme OceanicNext
 "set bg=dark
 "colorscheme cobalt2
-"colorscheme solarized
+"colorscheme zenburn
 "let g:solarized_termcolors=256
 "colorscheme spacegray
 
-"let g:airline_theme = "zenburn"
+let g:airline_theme = "solarized"
 "let g:airline_theme = "cobalt2"
-"let g:airline_theme = "solarized"
+"let g:airline_theme = "OceanicNext"
 
 
 
