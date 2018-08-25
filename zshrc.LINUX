@@ -88,6 +88,9 @@ alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias subl="subl3"
 
+# misc
+eval $(thefuck --alias crap)
+
 # git
 alias gcw="gc -m 'WORK IN PROGRESS'"
 
@@ -106,7 +109,7 @@ alias rna="react-native run-android"
 alias rni="react-native run-ios"
 
 
-
+# editor
 alias vi="nvim"
 alias vim="nvim"
 alias magit="vim -c MagitOnly"
@@ -119,6 +122,14 @@ alias erc="vi ~/.zshrc"
 alias sssh="ssh-add -K ${SSH_KEY_PATH}"
 
 
+# docker
+# add an alias if there is not already an alias
+# NB: once per boot, when the alias is not present you will be prompted for your user password
+ip address show up | grep 10.200.10.1 || sudo ip address add 10.200.10.1 inet lo
+export DOCKER_HOST_IP=10.200.10.1
+
+alias dcup="docker-compose up -d"
+alias dcdown="docker-compose down"
 
 # gradle
 alias gw="./gradlew"
@@ -178,7 +189,7 @@ alias findinspectiondbs="find . -name "inspections.db" -exec ls -lh {} \;"
 
 
 # haskell ide engine
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.cabal/bin:$HOME/.local/bin:$PATH
 #alias ghc="stack exec -- ghc"
 #alias ghc="stack ghc"
 
