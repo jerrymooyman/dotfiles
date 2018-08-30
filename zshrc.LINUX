@@ -125,7 +125,7 @@ alias sssh="ssh-add -K ${SSH_KEY_PATH}"
 # docker
 # add an alias if there is not already an alias
 # NB: once per boot, when the alias is not present you will be prompted for your user password
-ip address show up | grep 10.200.10.1 || sudo ip address add 10.200.10.1 inet lo
+ip address show up | grep 10.200.10.1 || sudo ip address add 10.200.10.1 dev lo
 export DOCKER_HOST_IP=10.200.10.1
 
 alias dcup="docker-compose up -d"

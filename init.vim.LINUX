@@ -141,7 +141,7 @@ nnoremap <leader>d :bd<CR>
 " close all buffers
 nnoremap <leader>D :%bd<CR>
 " list buffers
-nnoremap <Leader>b :Buffers<CR>
+nnoremap <space> :Buffers<CR>
 
 " vert split
 nnoremap <leader>v :vs<CR>
@@ -265,7 +265,7 @@ let g:airline#extensions#branch#enabled = 1 " just nevever found it that useful 
 " How can I close vim if the only window left open is a NERDTree?
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " toggle NERDTree
-map <space> :NERDTreeToggle<CR>
+map <F8> :NERDTreeToggle<CR>
 let g:NERDTreeChDirMode=2
 let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__', 'node_modules']
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
