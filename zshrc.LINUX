@@ -74,6 +74,30 @@ export EDITOR='nvim'
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+
+
+
+# ===================================================
+# modern cli tools
+# ===================================================
+
+# a cat clone with wings
+# ref: https://github.com/sharkdp/bat
+alias cat='bat'
+
+# pretty ping
+# ref: http://denilson.sa.nom.br/prettyping/
+alias ping='prettyping --nolegend'
+
+# htop - system diagnosis
+# ref: http://hisham.hm/htop/
+alias top="sudo htop" # alias top and fix high sierra bug
+
+# ===================================================
+
+
+
+
 # ssh stuff
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 alias sssh="ssh-add -K ${SSH_KEY_PATH}"
@@ -93,6 +117,7 @@ eval $(thefuck --alias crap)
 
 # git
 alias gcw="gc -m 'WORK IN PROGRESS'"
+alias gacw="gaa && gcw"
 
 # python
 alias python="python3"
@@ -182,6 +207,10 @@ export PATH=$HOME/development/flutter/bin:$PATH
 
 # search using fzf (fuzzy)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+# add support for ctrl+o to open selected file in VS Code
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
 
 
 # find inspection dbs
