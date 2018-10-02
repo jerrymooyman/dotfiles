@@ -77,9 +77,9 @@ Plug 'ludovicchabant/vim-gutentags'
 
 
 "=========== Themes ============================================
-Plug 'herrbischoff/cobalt2.vim'
+"Plug 'herrbischoff/cobalt2.vim'
 "Plug 'trevordmiller/nova-vim'
-Plug 'jnurmine/Zenburn'
+"Plug 'jnurmine/Zenburn'
 Plug 'altercation/vim-colors-solarized'
 "Plug 'icymind/NeoSolarized'
 "Plug 'frankier/neovim-colors-solarized-truecolor-only'
@@ -90,8 +90,8 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'ajh17/Spacegray.vim'
 "Plug 'ajmwagar/vim-deus'
 "Plug 'andreasvc/vim-256noir'
-Plug 'tyrannicaltoucan/vim-deep-space'
-Plug 'mhartington/oceanic-next'
+"Plug 'tyrannicaltoucan/vim-deep-space'
+"Plug 'mhartington/oceanic-next'
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
@@ -149,6 +149,22 @@ nnoremap <leader>v :vs<CR>
 " close all other windows
 nnoremap <leader>c :only<CR>
 
+
+" Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
+
+
+
+
 " required to detect filetype
 filetype plugin indent on
 
@@ -202,11 +218,6 @@ set softtabstop=2 " simulated tab width
 set expandtab     " spaces on tab press
 set smartindent   " indent automatically
 set shiftround    " uses shiftwidth when >, <
-
-"" map russian keyboard
-"set keymap=russian-jcukenwin
-"set iminsert=0
-"set imsearch=0
 
 " show whitespaces
 set list listchars=tab:»·,trail:·
@@ -389,6 +400,7 @@ nnoremap <silent> lh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> ld :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> lr :call LanguageClient#textDocument_rename()<CR>
 nnoremap <silent> lf :call LanguageClient#textDocument_documentSymbol()<CR>
+nnoremap <silent> lf :call LanguageClient#textDocument_formatting()<CR>
 
 let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
 
