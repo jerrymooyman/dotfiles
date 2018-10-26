@@ -157,8 +157,9 @@ alias sssh="ssh-add -K ${SSH_KEY_PATH}"
 ip address show up | grep 10.200.10.1 || sudo ip address add 10.200.10.1 dev lo
 export DOCKER_HOST_IP=10.200.10.1
 
-alias dcup="docker-compose up -d"
-alias dcdown="docker-compose down"
+alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcp="docker-compose pull"
 
 # gradle
 alias gw="./gradlew"

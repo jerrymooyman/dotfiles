@@ -41,25 +41,38 @@ Plug 'jreybert/vimagit'
 
 "=========== Programming languages =============================
 
-Plug 'neovimhaskell/haskell-vim'
-Plug 'parsonsmatt/intero-neovim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': './install.sh'
-    \ }
-Plug 'alx741/vim-stylishask'
+"Plug 'neovimhaskell/haskell-vim'
+"Plug 'autozimu/LanguageClient-neovim', {
+    "\ 'branch': 'next',
+    "\ 'do': './install.sh'
+    "\ }
+"Plug 'alx741/vim-stylishask'
 " ref: https://fortes.com/2017/language-server-neovim/
 
 "Plug 'bitc/hdevtools'
 
-Plug 'zchee/deoplete-jedi'
+
+Plug 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/neco-ghc'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'scrooloose/syntastic'
+Plug 'tomtom/tlib_vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'garbas/vim-snipmate'
+Plug 'godlygeek/tabular'
+Plug 'ervandew/supertab'
+Plug 'Shougo/neocomplete.vim'
+
+
+
+"Plug 'zchee/deoplete-jedi'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
 
 "=========== Linters / Checkers ================================
 " https://github.com/w0rp/ale#faq-disable-linters
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 
 "Plug 'neomake/neomake'
 "Plug 'vim-syntastic/syntastic'
@@ -67,14 +80,14 @@ Plug 'w0rp/ale'
 
 
 "=========== Autocompleter =====================================
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'roxma/nvim-completion-manager'   // repo has been archived
 "Plug 'ervandew/supertab'   //has clash with other plugins
 
 
 "=========== cTags =============================================
 " https://medium.com/@kuiro5/best-way-to-set-up-ctags-with-neovim-37be99c1bd11
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 
 
 "=========== Themes ============================================
@@ -121,8 +134,8 @@ let mapleader = ";"
 set t_co=265
 syntax on
 let g:solarized_termcolors=16
-set background=dark
 "set background=light
+set background=dark
 colorscheme solarized
 "colorscheme OceanicNext
 "set bg=dark
@@ -150,20 +163,17 @@ nnoremap <leader>v :vs<CR>
 " close all other windows
 nnoremap <leader>c :only<CR>
 
-
-" Copy to clipboard
+" " Copy to clipboard
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
 nnoremap  <leader>y  "+y
 nnoremap  <leader>yy  "+yy
 
-" Paste from clipboard
+" " Paste from clipboard
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
-
-
 
 
 " required to detect filetype
@@ -219,6 +229,11 @@ set softtabstop=2 " simulated tab width
 set expandtab     " spaces on tab press
 set smartindent   " indent automatically
 set shiftround    " uses shiftwidth when >, <
+
+"" map russian keyboard
+"set keymap=russian-jcukenwin
+"set iminsert=0
+"set imsearch=0
 
 " show whitespaces
 set list listchars=tab:»·,trail:·
@@ -338,13 +353,13 @@ vnoremap // y/<C-R>"<CR>
 
 
 "Deoplete
-let g:deoplete#enable_at_startup = 1
-" use tab to forward cycle
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" use tab to backward cycle
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" Close the documentation window when completion is done
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+"let g:deoplete#enable_at_startup = 1
+ "use tab to forward cycle
+"inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+ "use tab to backward cycle
+"inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+ "Close the documentation window when completion is done
+"autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
 
@@ -352,84 +367,28 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 "=== Haskell =========================================================
 "=====================================================================
 
-" intero
-augroup interoMaps
-  au!
-  " Maps for intero. Restrict to Haskell buffers so the bindings don't collide.
-
-  " Background process and window management
-  au FileType haskell nnoremap <silent> <leader>is :InteroStart<CR>
-  au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
-
-  " Open intero/GHCi split horizontally
-  "au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
-  " Open intero/GHCi split vertically
-  "au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
-  "au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
-
-  " Reloading (pick one)
-  " Automatically reload on save
-  au BufWritePost *.hs InteroReload
-  " Manually save and reload
-  "au FileType haskell nnoremap <silent> <leader>wr :w \| :InteroReload<CR>
-
-  " Load individual modules
-  au FileType haskell nnoremap <silent> <leader>il :InteroLoadCurrentModule<CR>
-  au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
-
-  " Type-related information
-  " Heads up! These next two differ from the rest.
-  au FileType haskell map <silent> <leader>t <Plug>InteroGenericType
-  au FileType haskell map <silent> <leader>T <Plug>InteroType
-  au FileType haskell nnoremap <silent> <leader>it :InteroTypeInsert<CR>
-
-  " Navigation
-  au FileType haskell nnoremap <silent> <leader>jd :InteroGoToDef<CR>
-
-  " Managing targets
-  " Prompts you to enter targets (no silent):
-  au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
-augroup END
-
-" Intero starts automatically. Set this if you'd like to prevent that.
-let g:intero_start_immediately = 1
-
-" Enable type information on hover (when holding cursor at point for ~1 second).
-let g:intero_type_on_hover = 1
-
-" Change the intero window size; default is 10.
-let g:intero_window_size = 15
-
-" Sets the intero window to split vertically; default is horizontal
-let g:intero_vertical_split = 1
-
-" OPTIONAL: Make the update time shorter, so the type info will trigger faster.
-set updatetime=1000
-
-
-
 
 "haskell-vim
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+"let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+"let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+"let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+"let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+"let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+"let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+"let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
-let g:haskell_classic_highlighting = 1
-let g:haskell_indent_if = 3
-let g:haskell_indent_case = 2
-let g:haskell_indent_let = 4
-let g:haskell_indent_where = 6
-let g:haskell_indent_before_where = 2
-let g:haskell_indent_after_bare_where = 2
-let g:haskell_indent_do = 3
-let g:haskell_indent_in = 1
-let g:haskell_indent_guard = 2
-let g:haskell_indent_case_alternative = 1
-let g:cabal_indent_section = 2
+"let g:haskell_classic_highlighting = 1
+"let g:haskell_indent_if = 3
+"let g:haskell_indent_case = 2
+"let g:haskell_indent_let = 4
+"let g:haskell_indent_where = 6
+"let g:haskell_indent_before_where = 2
+"let g:haskell_indent_after_bare_where = 2
+"let g:haskell_indent_do = 3
+"let g:haskell_indent_in = 1
+"let g:haskell_indent_guard = 2
+"let g:haskell_indent_case_alternative = 1
+"let g:cabal_indent_section = 2
 
 
 
@@ -440,6 +399,7 @@ let g:LanguageClient_serverCommands = {
     \ 'javascript.jsx': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
     \ 'python': ['/usr/local/bin/pyls'],
     \ }
+    "\ 'haskell': ['hie'],
 if executable('javascript-typescript-stdio')
   let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
   " Use LanguageServer for omnifunc completion
@@ -455,7 +415,7 @@ nnoremap <silent> lm :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> lh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> ld :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> lr :call LanguageClient#textDocument_rename()<CR>
-nnoremap <silent> lf :call LanguageClient#textDocument_documentSymbol()<CR>
+nnoremap <silent> ls :call LanguageClient#textDocument_documentSymbol()<CR>
 nnoremap <silent> lf :call LanguageClient#textDocument_formatting()<CR>
 
 let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
