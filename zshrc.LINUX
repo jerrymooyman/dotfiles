@@ -168,7 +168,10 @@ alias gw="./gradlew"
 # notes
 alias notes="vim ~/Dropbox/notebook"
 
-
+# navicate to repos
+alias cdrw="cd ~/repos/work"
+alias cdrl="cd ~/repos/learning"
+alias cdrp="cd ~/repos/private"
 
 # aws
 #alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"

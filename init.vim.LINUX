@@ -121,8 +121,8 @@ let mapleader = ";"
 set t_co=265
 syntax on
 let g:solarized_termcolors=16
-set background=dark
-"set background=light
+"set background=dark
+set background=light
 colorscheme solarized
 "colorscheme OceanicNext
 "set bg=dark
@@ -163,6 +163,9 @@ nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
 
+
+" search / replace mapping
+nnoremap <Leader>r :%s/\<<C-r><C-w>\>/
 
 
 
@@ -405,6 +408,9 @@ let g:intero_vertical_split = 1
 
 " OPTIONAL: Make the update time shorter, so the type info will trigger faster.
 set updatetime=1000
+"set allow-newer=true
+
+
 
 
 
@@ -432,12 +438,17 @@ let g:haskell_indent_case_alternative = 1
 let g:cabal_indent_section = 2
 
 
+"let g:LanguageClient_serverCommands = {
+    "\ 'javascript': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
+    "\ 'javascript.jsx': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
+    "\ 'python': ['/usr/local/bin/pyls'],
+    "\ }
 
 "Language Client
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['/home/jerry/.nvm/versions/node/v8.9.4/bin/javascript-typescript-stdio'],
+    \ 'javascript': ['/home/jerry/.nvm/versions/node/v8.12.0/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['/home/jerry/.nvm/versions/node/v8.12.0/bin/javascript-typescript-stdio'],
     \ 'python': ['/usr/local/bin/pyls'],
     \ }
 if executable('javascript-typescript-stdio')
@@ -458,7 +469,7 @@ nnoremap <silent> lr :call LanguageClient#textDocument_rename()<CR>
 nnoremap <silent> lf :call LanguageClient#textDocument_documentSymbol()<CR>
 nnoremap <silent> lf :call LanguageClient#textDocument_formatting()<CR>
 
-let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
+"let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
 
 
 
