@@ -52,7 +52,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode node npm themes wd)
+plugins=(git vi-mode node npm themes wd zsh-autosuggestions)
 
 
 # User configuration
@@ -234,3 +234,12 @@ export PATH=$HOME/.cabal/bin:$HOME/.local/bin:$PATH
 export PATH=$HOME/.stack/programs/x86_64-linux/ghc-8.2.2/bin:$PATH
 
 
+source ~/bin/tmuxinator.zsh
+# start tmux session by default
+if [ -z "$TMUX" ]; then
+    tmux attach -t default || tmux new -s default
+fi
+
+
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"

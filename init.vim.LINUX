@@ -56,6 +56,8 @@ Plug 'zchee/deoplete-jedi'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
+Plug 'udalov/kotlin-vim'
+Plug 'elmcast/elm-vim'
 
 "=========== Linters / Checkers ================================
 " https://github.com/w0rp/ale#faq-disable-linters
@@ -80,7 +82,7 @@ Plug 'ludovicchabant/vim-gutentags'
 "=========== Themes ============================================
 "Plug 'herrbischoff/cobalt2.vim'
 "Plug 'trevordmiller/nova-vim'
-"Plug 'jnurmine/Zenburn'
+Plug 'jnurmine/Zenburn'
 Plug 'altercation/vim-colors-solarized'
 "Plug 'icymind/NeoSolarized'
 "Plug 'frankier/neovim-colors-solarized-truecolor-only'
@@ -88,7 +90,7 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'morhetz/gruvbox'
 "Plug 'dracula/vim'
 "Plug 'lifepillar/vim-solarized8'
-"Plug 'ajh17/Spacegray.vim'
+Plug 'ajh17/Spacegray.vim'
 "Plug 'ajmwagar/vim-deus'
 "Plug 'andreasvc/vim-256noir'
 "Plug 'tyrannicaltoucan/vim-deep-space'
@@ -123,13 +125,13 @@ syntax on
 let g:solarized_termcolors=16
 "set background=dark
 set background=light
-colorscheme solarized
+"colorscheme solarized
 "colorscheme OceanicNext
 "set bg=dark
 "colorscheme cobalt2
 "colorscheme zenburn
 "let g:solarized_termcolors=256
-"colorscheme spacegray
+colorscheme spacegray
 
 let g:airline_theme = "solarized"
 "let g:airline_theme = "cobalt2"
@@ -279,8 +281,10 @@ let g:airline#extensions#branch#enabled = 1 " just nevever found it that useful 
 "NERDTree
 " How can I close vim if the only window left open is a NERDTree?
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"autocmd VimEnter * NERDTree
 " toggle NERDTree
 map <F8> :NERDTreeToggle<CR>
+map <S-F8> :NERDTreeFind<CR>
 let g:NERDTreeChDirMode=2
 let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__', 'node_modules']
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
@@ -447,6 +451,7 @@ let g:cabal_indent_section = 2
 "Language Client
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
     \ 'javascript': ['/home/jerry/.nvm/versions/node/v8.12.0/bin/javascript-typescript-stdio'],
     \ 'javascript.jsx': ['/home/jerry/.nvm/versions/node/v8.12.0/bin/javascript-typescript-stdio'],
     \ 'python': ['/usr/local/bin/pyls'],
