@@ -1,5 +1,25 @@
+
+
+# -------------------------------------------------------------
+# Base PATHs
+# -------------------------------------------------------------
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+
+# prefer homebrew installed programs over system-provided programs
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# -------------------------------------------------------------
+
+
+
+
+# -------------------------------------------------------------
+# zsh settings
+# -------------------------------------------------------------
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/jmooyman/.oh-my-zsh
@@ -48,34 +68,77 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# zsh-completions
+#fpath=(/usr/local/share/zsh-completions $fpath)
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
-plugins=(git colored-man colorize github brew osx zsh-syntax-highlighting vi-mode node npm docker docker-compose thefuck themes)
+# plugins=(git colored-man colorize github brew osx zsh-syntax-highlighting vi-mode node npm docker docker-compose thefuck themes)
+plugins=(git colored-man-pages wd colorize github brew osx vi-mode node npm docker docker-compose thefuck themes)
+
+alias zshconfig="mate ~/.zshrc"
+alias ohmyzsh="mate ~/.oh-my-zsh"
+
+source $ZSH/oh-my-zsh.sh
+
+# -------------------------------------------------------------
 
 
 # Add env.sh
 #source ~/Projects/config/env.sh
 
-# User configuration
-
 # export MANPATH="/usr/local/man:$MANPATH"
+
 
 # personal paths
 export REPOS=${HOME}/repos
 
-# You may need to manually set your language environment
+
+
+# -------------------------------------------------------------
+# language environment
+# -------------------------------------------------------------
+
 export LANG=en_AU.UTF-8
 
+# -------------------------------------------------------------
+
+
+
+
+# -------------------------------------------------------------
+# short hand for zsh & vim configs
+# -------------------------------------------------------------
+
+alias evrc="vi ~/.config/nvim/init.vim"
+alias rc=". ~/.zshrc"
+alias erc="vi ~/.zshrc"
+
+# -------------------------------------------------------------
+
+
+
+# -------------------------------------------------------------
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#export EDITOR='vim'
-export EDITOR='nvim'
-# else
-#   export EDITOR='mvim'
-# fi
+# -------------------------------------------------------------
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='mvim'
+fi
+
+alias vi="nvim"
+alias vim="nvim"
+
+# -------------------------------------------------------------
+
+
+
 
 # notes stuff
 #n() { $EDITOR ~/notes/"$*".txt }
@@ -85,13 +148,31 @@ export EDITOR='nvim'
 # export ARCHFLAGS="-arch x86_64"
 
 # ssh
-export SSH_KEY_PATH="${HOME}/.ssh/id_rsa"
+#export SSH_KEY_PATH="${HOME}/.ssh/id_rsa"
 #ssh-add -K ${SSH_KEY_PATH}
 
-# JAVA settings
-export JAVA_HOME=/Library/Java/Home
 
+
+# -------------------------------------------------------------
+# JAVA settings
+# -------------------------------------------------------------
+
+# jenv for JAVA_HOME management
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+# JUnit
+export JUNIT_HOME="$HOME/junit"
+export CLASSPATH=$CLASSPATH:$JUNIT_HOME/junit.jar
+
+# -------------------------------------------------------------
+
+
+
+# -------------------------------------------------------------
 # Android settings
+# -------------------------------------------------------------
+
 export ANDROID_HOME=${HOME}/Library/Android/sdk
 export ANDROID_TOOLS=${ANDROID_HOME}/tools
 export ANDROID_TOOLS_BIN=${ANDROID_TOOLS}/bin
@@ -103,53 +184,56 @@ export PATH=${PATH}:${ANDROID_TOOLS}:${ANDROID_PLATFORM_TOOLS}:${ANDROID_TOOLS_B
 export PATH=${PATH}:${ANDROID_HOME}/ndk-bundle
 export ANDROID_NDK=${ANDROID_HOME}/ndk-bundle
 
-# go-lang
-export GOPATH=${HOME}/go
-export PATH=${PATH}:${GOPATH}/bin
+# used for alfred laucher (not-working)
+export emu_path=$ANDROID_HOME/emulator/emulator
+
+#alias lemu="${ANDROID_TOOLS}/emulator -avd Nexus_5_API_23 -netdelay none -netspeed full -no-audio -no-window &"
+
+# -------------------------------------------------------------
 
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#alias emacs=e
-#alias emacsclient=ec
 
-alias mc=". /usr/local/Cellar/midnight-commander/4.8.19/libexec/mc/mc-wrapper.sh"
+
+# -------------------------------------------------------------
+# Go-Lang settings
+# -------------------------------------------------------------
+#export GOPATH=${HOME}/go
+#export PATH=${PATH}:${GOPATH}/bin
+# -------------------------------------------------------------
+
+
+
+#alias mc=". /usr/local/Cellar/midnight-commander/4.8.19/libexec/mc/mc-wrapper.sh"
 
 alias esl="eslint **/*.js --quiet"
 
+
+# -------------------------------------------------------------
 # react native
+# -------------------------------------------------------------
 alias rn="react-native"
 alias rns="rn start"
 alias rni="rn run-ios"
 alias rna="rn run-android"
+# -------------------------------------------------------------
 
 
-alias vi="nvim"
-alias vim="nvim"
-alias magit="vim -c MagitOnly"
 
 
-alias evrc="vi ~/.config/nvim/init.vim"
-alias rc=". ~/.zshrc"
-alias erc="vi ~/.zshrc"
-# alias rc=". ~/.zshrc"
-# alias vrc="vi ~/.zshrc"
+
+#alias magit="vim -c MagitOnly"
+
 
 # ssh stuff
-alias sssh="ssh-add -K ${SSH_KEY_PATH}"
+#alias sssh="ssh-add -K ${SSH_KEY_PATH}"
 
 
-# python
-#alias python="python3"
 
-# llvm stuff
+# -------------------------------------------------------------
+# llvm settings
+# -------------------------------------------------------------
+
 #export PATH="/usr/local/opt/llvm/bin:$PATH"
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/llvm/include/c++/v1/"
@@ -160,63 +244,164 @@ alias sssh="ssh-add -K ${SSH_KEY_PATH}"
 # emscripten
 #export LLVM_ROOT=/usr/local/opt/emscripten/libexec/llvm/bin
 
-# android 
-alias lemu="${ANDROID_TOOLS}/emulator -avd Nexus_5_API_23 -netdelay none -netspeed full -no-audio -no-window &"
+# -------------------------------------------------------------
 
-# docker
-alias dcd="docker-compose down"
-alias dcu="docker-compose up"
-alias dcr="dcd && dcu"
-alias di="docker images"
-alias dp="docker ps"
+
+
+
+# -------------------------------------------------------------
+# Docker things
+# -------------------------------------------------------------
+
+# adds alias for docker_host_ip
+setup-docker-host-ip() {
+  # add an alias if there is not already an alias
+  # NB once per boot, when the alias is not present you will be prompted for your user password
+  ifconfig | grep -q 10.200.10.1 || sudo ifconfig lo0 alias 10.200.10.1
+
+  export DOCKER_HOST_IP=10.200.10.1
+}
+
+# stops and removes all running docker containers
+docker-nuke() {
+  docker stop $(docker ps -a -q)
+  docker rm $(docker ps -a -q)
+}
+
+# nukes and removes all images
+docker-nuke-from-orbit() {
+  docker-nuke
+  docker rmi $(docker images -q)
+}
+
+# adds docker pem and performs remote docker-machine setup
+docker-machine-setup() {
+  if [  $# -ne 1 ]
+  then
+    display-docker-machine-setup-usage
+  else
+    ssh-add ~/.ssh/docker-machine.pem
+    ~/Scripts/setup_docker_machine.sh
+  fi
+}
+
+display-docker-machine-setup-usage() {
+  echo "Requires 1 argument\n"
+  echo -e "Usage:\ndocker-machine-setup [docker_machine_name] \n"
+  echo -e "Example:\ndocker-machine-setup mob-m \n"
+}
+
+#alias dcd="docker-compose down"
+#alias dcu="docker-compose up"
+#alias dcr="dcd && dcu"
+#alias di="docker images"
+#alias dp="docker ps"
 # convenience
-alias dlc="docker ps -aq"
-alias dsarc="docker stop $(docker ps -aq)"
-alias drac="docker rm $(docker ps -aq)"
-alias drai="docker rmi $(docker images -q)"
-alias docker_restart="osascript -e 'quit app \"Docker\"' && open -a Docker"
+#alias dlc="docker ps -aq"
+#alias dsa='docker stop "eval $(docker ps -aq)"'
+#alias dra="docker rm $(docker ps -aq)"
+alias docker-restart="osascript -e 'quit app \"Docker\"' && open -a Docker"
 
-alias dminit="ssh-add ~/docker-machine.pem && ~/setup_docker_machine.sh"
 alias dmcu='eval $(docker-machine env default) && eval $(aws ecr get-login --region ap-southeast-2 --no-include-email --profile rescd) && DOCKER_HOST_IP=$(docker-machine ip default) docker-compose up -d'
 
-# aws 
-alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"
+# -------------------------------------------------------------
 
+
+
+# -------------------------------------------------------------
+# AWS
+# -------------------------------------------------------------
+# login to ECR
+alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"
+# -------------------------------------------------------------
+
+
+
+
+# -------------------------------------------------------------
 # git
+# -------------------------------------------------------------
 alias gcw="git commit -m 'WORK IN PROGRESS'"
 alias gac="gaa && gcw --no-verify"
+# -------------------------------------------------------------
 
+
+
+
+# -------------------------------------------------------------
 # intellij
+# -------------------------------------------------------------
 alias ij="/usr/local/bin/idea"
+# -------------------------------------------------------------
 
+
+
+# -------------------------------------------------------------
+# gradle
+# -------------------------------------------------------------
 alias gw="./gradlew"
+# -------------------------------------------------------------
+
+
+
+
+# -------------------------------------------------------------
+# get ip address
+# -------------------------------------------------------------
+alias ipe='curl ipinfo.io/ip'         # external ip
+alias ipi='ipconfig getifaddr en0'    # internal ip
+# -------------------------------------------------------------
+
+
 
 # kotlin/native
-export KOTLINNATIVEPATH=${REPOS}/public/kotlin-native
-export PATH=${PATH}:${KOTLINNATIVEPATH}/dist/bin
+#export KOTLINNATIVEPATH=${REPOS}/public/kotlin-native
+#export PATH=${PATH}:${KOTLINNATIVEPATH}/dist/bin
+
+
+
+# -------------------------------------------------------------
+# node/npm/yarn & nvm
+# -------------------------------------------------------------
 
 # to make npm installs faster
 export JOBS=max
 
+# nvm - node version manager
+export NVM_DIR="$HOME/.nvm"
+  # loads nvm
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
+  # loads nvm bash_completion
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
+
+# -------------------------------------------------------------
+
+
+
+# -------------------------------------------------------------
+# Miscellaneous
+# -------------------------------------------------------------
+
 # thefuck utility
 eval $(thefuck --alias crap)
+
+# better cli tools
+alias cat='bat'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+
+
+# search using fzf (fuzzy)
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# -------------------------------------------------------------
+
+
 
 # exercism stuff
 #if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
 #    . ~/.config/exercism/exercism_completion.zsh
 #fi
 
-# add an alias if there is not already an alias
-# # NB once per boot, when the alias is not present you will be prompted for your user password
-ifconfig | grep -q 10.200.10.1 || sudo ifconfig lo0 alias 10.200.10.1
-  
-export DOCKER_HOST_IP=10.200.10.1
-
-# prefer homebrew installed programs over system-provided programs
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-
-source $ZSH/oh-my-zsh.sh
 
 # haskell stuff
 #export PATH="$HOME/.cabal/bin:$PATH"
@@ -224,28 +409,60 @@ source $ZSH/oh-my-zsh.sh
 #alias ghci="stack ghc repl"
 #export PATH="/usr/local/opt/ghc@8.0/bin:$PATH"
 #export PATH="$HOME/Library/Haskell/bin:$PATH"
-export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH="/usr/local/opt/sqlite/bin:$PATH"
 
-# JUnit
-export JUNIT_HOME="$HOME/junit"
-export CLASSPATH=$CLASSPATH:$JUNIT_HOME/junit.jar
+
+#export PATH="/usr/local/opt/sqlite/bin:$PATH"
+
 
 # access logs on a remote docker container
-export WORKSPACE="$HOME/repos/work"
+#export WORKSPACE="$HOME/repos/work"
 function dmtail {
     project_name=$(basename `pwd`)
     docker-machine ssh $1 tail -f $WORKSPACE/$project_name/$2
 }
 
-# search using fzf (fuzzy)
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 
 # find inspection dbs
-alias findinspectiondbs="find . -name "inspections.db" -exec ls -lh {} \;"
+#alias findinspectiondbs="find . -name "inspections.db" -exec ls -lh {} \;"
+
+
+
+# -------------------------------------------------------------
+# virtualenv
+# -------------------------------------------------------------
+export PATH="/Users/jmooyman/Library/Python/2.7/bin:$PATH"
+alias activate="source .venv/playbooks/bin/activate"
+# -------------------------------------------------------------
+
+
+
+# -------------------------------------------------------------
+# ansible vault
+# -------------------------------------------------------------
+
+ansible-vault-view() {
+  if [  $# -le 1 ]
+  then
+    display-ansible-vault-view-usage
+  else
+    ansible-vault view --vault-password-file=~/Secrects/vault-pass.txt secrets/$2/$1.yml
+  fi
+}
+
+display-ansible-vault-view-usage() {
+  echo "Requires 2 arguments\n"
+  echo -e "Usage:\nansible-value-view [secret] [env] \n"
+  echo -e "Example:\nansible-value-view keycloak stage \n"
+  echo -e "Common secrets:\nkeycloak\ndb-root-creds\nauth-client"
+}
+
+alias avv="ansible-vault-view"
+
+# -------------------------------------------------------------
+
+
+
 

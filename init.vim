@@ -14,49 +14,49 @@ call plug#begin('~/.config/nvim/plugged')
 "=========== Search ============================================
 " fuzzy search
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug '/usr/local/opt/fzf'
+" Plug '/usr/local/opt/fzf'
 
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf'
+" Plug 'junegunn/fzf.vim'
 
 " file search
-Plug 'rking/ag.vim'
+" Plug 'rking/ag.vim'
 " https://github.com/junegunn/fzf#using-homebrew-or-linuxbrew
 " https://github.com/junegunn/fzf/blob/master/README-VIM.md
 
 
 "=========== Files / Directories ===============================
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
-Plug 'easymotion/vim-easymotion'
+" Plug 'easymotion/vim-easymotion'
 
-Plug 'scrooloose/nerdcommenter'
+" Plug 'scrooloose/nerdcommenter'
 
 
 "=========== Source Control ====================================
-Plug 'airblade/vim-gitgutter'
-Plug 'jreybert/vimagit'
+" Plug 'airblade/vim-gitgutter'
+" Plug 'jreybert/vimagit'
 
 
 "=========== Programming languages =============================
 
-Plug 'neovimhaskell/haskell-vim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': './install.sh'
-    \ }
+" Plug 'neovimhaskell/haskell-vim'
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': './install.sh'
+"     \ }
 " ref: https://fortes.com/2017/language-server-neovim/
 
 "Plug 'bitc/hdevtools'
 
-Plug 'zchee/deoplete-jedi'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+" Plug 'zchee/deoplete-jedi'
+" Plug 'pangloss/vim-javascript'
+" Plug 'mxw/vim-jsx'
 
 
 "=========== Linters / Checkers ================================
 " https://github.com/w0rp/ale#faq-disable-linters
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 "Plug 'neomake/neomake'
 "Plug 'vim-syntastic/syntastic'
@@ -64,7 +64,7 @@ Plug 'w0rp/ale'
 
 
 "=========== Autocompleter =====================================
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'roxma/nvim-completion-manager'   // repo has been archived
 "Plug 'ervandew/supertab'   //has clash with other plugins
 
@@ -72,13 +72,13 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 
 "=========== Themes ============================================
-Plug 'herrbischoff/cobalt2.vim'
-Plug 'trevordmiller/nova-vim'
-Plug 'jnurmine/Zenburn'
-Plug 'vim-scripts/Solarized'
+" Plug 'herrbischoff/cobalt2.vim'
+" Plug 'trevordmiller/nova-vim'
+" Plug 'jnurmine/Zenburn'
+" Plug 'vim-scripts/Solarized'
 
-Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
 
 
 call plug#end()
