@@ -1,2 +1,5 @@
 init.el~
 tags
+plugged
+vim.log
+autoload

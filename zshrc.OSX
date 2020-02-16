@@ -1,4 +1,6 @@
 
+# Uncomment for profiling
+#zmodload zsh/zprof
 
 # -------------------------------------------------------------
 # Base PATHs
@@ -77,13 +79,21 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
-# plugins=(git colored-man colorize github brew osx zsh-syntax-highlighting vi-mode node npm docker docker-compose thefuck themes)
-plugins=(git colored-man-pages wd colorize github brew osx vi-mode node npm docker docker-compose thefuck themes)
+# plugins=(git colored-man-pages colorize github brew osx zsh-syntax-highlighting vi-mode node npm docker docker-compose thefuck themes)
+plugins=(git colored-man-pages wd colorize osx vi-mode node npm docker docker-compose thefuck themes)
 
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 
 source $ZSH/oh-my-zsh.sh
+
+
+# make zsh faster
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 # -------------------------------------------------------------
 
@@ -206,8 +216,34 @@ export emu_path=$ANDROID_HOME/emulator/emulator
 
 #alias mc=". /usr/local/Cellar/midnight-commander/4.8.19/libexec/mc/mc-wrapper.sh"
 
+# -------------------------------------------------------------
+# react native
+# -------------------------------------------------------------
+
+enable-node() {
+  if [[ -d ~/.nvm.DISABLED ]]
+  then
+      mv ~/.nvm.DISABLED ~/.nvm
+      nvm use default
+      echo "Node enabled"
+  else
+      echo "Node is already enabled"
+  fi
+}
+
+disable-node() {
+  if [[ -d ~/.nvm ]]
+  then
+      mv ~/.nvm ~/.nvm.DISABLED
+      echo "Node disabled"
+  else
+      echo "Node is already disabled"
+  fi
+}
+
 alias esl="eslint **/*.js --quiet"
 
+# -------------------------------------------------------------
 
 # -------------------------------------------------------------
 # react native
@@ -348,8 +384,12 @@ alias gw="./gradlew"
 # -------------------------------------------------------------
 # get ip address
 # -------------------------------------------------------------
-alias ipe='curl ipinfo.io/ip'         # external ip
-alias ipi='ipconfig getifaddr en0'    # internal ip
+show-ip() {
+  echo "Internal IP: "
+  ipconfig getifaddr en0    # internal ip
+  echo "\nExternal IP: "
+  curl ipinfo.io/ip         # external ip
+}
 # -------------------------------------------------------------
 
 
@@ -393,6 +433,9 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 # search using fzf (fuzzy)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# auto-complete for tldr
+complete -W "$(tldr 2>/dev/null --list)" tldr
+
 # -------------------------------------------------------------
 
 
@@ -410,6 +453,14 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 #export PATH="/usr/local/opt/ghc@8.0/bin:$PATH"
 #export PATH="$HOME/Library/Haskell/bin:$PATH"
 
+
+
+
+# -------------------------------------------------------------
+# Flutter
+# -------------------------------------------------------------
+export PATH="$HOME/bin/flutter/bin:$PATH"
+# -------------------------------------------------------------
 
 
 
@@ -448,7 +499,7 @@ ansible-vault-view() {
   then
     display-ansible-vault-view-usage
   else
-    ansible-vault view --vault-password-file=~/Secrects/vault-pass.txt secrets/$2/$1.yml
+    ansible-vault view --vault-password-file=~/Secrets/vault-pass.txt secrets/$2/$1.yml
   fi
 }
 
@@ -463,6 +514,23 @@ alias avv="ansible-vault-view"
 
 # -------------------------------------------------------------
 
+# format a UUID with dashes
+format-uuid-with-dashes() {
+  p1=$(echo $1 | cut -c 1-8)
+  p2=$(echo $1 | cut -c 9-12)
+  p3=$(echo $1 | cut -c 13-16)
+  p4=$(echo $1 | cut -c 17-20)
+  p5=$(echo $1 | cut -c 21-32)
+  result=$p1-$p2-$p3-$p4-$p5
+  echo formated: $result
+  echo $result | pbcopy
+  echo Copied to clipboard
+}
+
+alias fuuid="format-uuid-with-dashes"
 
 
+
+# Uncomment for profiling
+#zprof
 
