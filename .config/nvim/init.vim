@@ -35,7 +35,10 @@ Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
 "Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
+
 Plug 'SirVer/ultisnips'
+"Plug 'Shougo/neosnippet.vim'
+Plug 'honza/vim-snippets'
 
 
 
@@ -68,7 +71,7 @@ Plug 'ianks/vim-tsx'
 
 
 "----------- Flutter -------------------------------------------
-"Plug 'dart-lang/dart-vim-plugin'
+Plug 'dart-lang/dart-vim-plugin'
 "Plug 'thosakwe/vim-flutter'
 " also coc-flutter
 
@@ -100,24 +103,31 @@ Plug 'ianks/vim-tsx'
 "Plug 'ludovicchabant/vim-gutentags'
 
 
+
+"=========== Productivity ======================================
+Plug 'vimwiki/vimwiki'
+
+"
+"Plug 'plasticboy/vim-markdown'
+
+
 "----------- Themes -------------------------------------------
-Plug 'herrbischoff/cobalt2.vim'
-Plug 'trevordmiller/nova-vim'
 Plug 'jnurmine/Zenburn'
 Plug 'vim-scripts/Solarized'
-Plug 'vim-scripts/pyte'
+Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'morhetz/gruvbox'
-
 Plug 'ryanoasis/vim-devicons'
 
 
 call plug#end()
 " ====================================================================
 
-
+" add files to runtime
+"set rtp+=~/.config/nvim
+"set rtp+=~/.vim
 
 
 " ====================================================================
@@ -125,14 +135,22 @@ call plug#end()
 " ====================================================================
 set encoding=UTF-8
 set t_co=256
-"set background=light
-set background=dark
-"colorscheme solarized
-"colorscheme zenburn
-colorscheme gruvbox
 
-"let g:airline_theme = "zenburn"
+" for light theme
+"set background=light
+
+colorscheme solarized
+"let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
 "let g:airline_theme = "solarized"
+
+" for dark theme
+set background=dark
+
+"colorscheme PaperColor
+"let g:airline_theme = "papercolor"
+
+colorscheme gruvbox
 let g:airline_theme = "gruvbox"
 
 
@@ -257,17 +275,12 @@ nnoremap œ :bd!<CR>
 
 
 
-
 " ====================================================================
-" WhichKey - show key mappings
+" Miscellaneous
 " ====================================================================
-"call which_key#register(';', "g:which_key_map")
-"autocmd! User vim-which-key call which_key#register(';', 'g:which_key_map')
-"nnoremap <leader><space> :WhichKey '<leader>'<CR>
 
-"let g:which_key_map = {}
-"let g:which_key_map.h = { 'name' : '+GitGutter' }
-
+" no highlight
+map <c-_> :noh<CR>
 
 " ====================================================================
 
@@ -286,7 +299,6 @@ nnoremap <leader>D :%bd<CR>
 nnoremap <leader><space> :Buffers<CR>
 " close all other windows
 nnoremap <leader>c :only<CR>
-
 " vert split
 nnoremap <leader>v :vs<CR>
 
@@ -382,9 +394,14 @@ nnoremap <C-l> :GFiles?<CR>
 
 
 " ====================================================================
-" Prettier
+" UltiSnips
 " ====================================================================
+" need this to get ultisnips to recognise filetypes
+au FileType javascript :UltiSnipsAddFiletypes javascript typescript
+
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsSnippetsDir = "~/.vim/my_snippets/"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", $HOME.".vim/my_snippets"]
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
@@ -404,12 +421,13 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " ====================================================================
 
 
+
+
 " ====================================================================
 " Coc - Language server client
 " ====================================================================
 
 " extensions
-
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
@@ -419,6 +437,8 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-json',
   \ 'coc-python',
+  \ 'coc-markdown',
+  \ 'coc-flutter'
   \ ]
 
 " Better display for messages
@@ -514,8 +534,8 @@ omap af <Plug>(coc-funcobj-a)
 " NOTE: remap to avoid <C-i> chord clash
 "nmap <silent> <TAB> <Plug>(coc-range-select)
 "xmap <silent> <TAB> <Plug>(coc-range-select)
-nmap <silent> <C-e> <Plug>(coc-range-select)
-xmap <silent> <C-e> <Plug>(coc-range-select)
+"nmap <silent> <C-e> <Plug>(coc-range-select)
+"xmap <silent> <C-e> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -550,4 +570,12 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " ====================================================================
 
 
+" ====================================================================
+" vimwiki
+" ====================================================================
 
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+
+" ====================================================================

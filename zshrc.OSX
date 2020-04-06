@@ -31,6 +31,11 @@ export ZSH=/Users/jmooyman/.oh-my-zsh
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
 ZSH_THEME="bullet-train"
+# https://github.com/caiogondim/bullet-train.zsh
+
+# Uncomment for dark terminals
+BULLETTRAIN_CONTEXT_FG=white
+
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -290,13 +295,13 @@ alias rna="rn run-android"
 # -------------------------------------------------------------
 
 # adds alias for docker_host_ip
-setup-docker-host-ip() {
+#setup-docker-host-ip() {
   # add an alias if there is not already an alias
   # NB once per boot, when the alias is not present you will be prompted for your user password
   ifconfig | grep -q 10.200.10.1 || sudo ifconfig lo0 alias 10.200.10.1
 
   export DOCKER_HOST_IP=10.200.10.1
-}
+#}
 
 # stops and removes all running docker containers
 docker-nuke() {
@@ -408,12 +413,15 @@ show-ip() {
 export JOBS=max
 
 # nvm - node version manager
-export NVM_DIR="$HOME/.nvm"
-  # loads nvm
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
-  # loads nvm bash_completion
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
+#export NVM_DIR="$HOME/.nvm"
+  #[ -s "${HOME}/.nvm/nvm.sh" ] && . "${HOME}/.nvm/nvm.sh"
+  #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
 
+export NVM_DIR="$HOME/.nvm"
+# loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # -------------------------------------------------------------
 
 
@@ -529,7 +537,9 @@ format-uuid-with-dashes() {
 
 alias fuuid="format-uuid-with-dashes"
 
-
+show-used-ports() {
+  netstat -a -n | grep 'LISTEN '
+}
 
 # Uncomment for profiling
 #zprof
