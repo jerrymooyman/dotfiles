@@ -212,7 +212,9 @@ function load-work-ssh {
 # -------------------------------------------------------------
 
 export BITBUCKET_USER="jerry.mooyman@forgeworks.com"
-export BITBUCKET_TOKEN="ATATT3xFfGF0GyjclUhy5N8FGBv9EyuVbABLDNZcxNRbQCv-18S2biFQ5WzPK-YPfhxrTSunsHlwji0Z0Qs_bubdbFBdUrfZlg2OniPCuuNZIqlmYxJ8JK-ZInQgNS3wbOCLEevenbKYzNV8oYqDhOpBbXEJAS98xjfJuWfYzr3XlVsglJM5WWc=CCB3FF3D"
+# Secrets are NOT kept here - this repo is public. They live in ~/.zshrc.secrets
+# (chmod 600, never committed), e.g. export BITBUCKET_TOKEN="..."
+[ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"
 
 # -------------------------------------------------------------
 # JAVA settings
