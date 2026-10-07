@@ -58,13 +58,17 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "----------- javascript / Typescript ---------------------------
 "Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
 "Plug 'carlitux/deoplete-ternjs'
-" Plug 'zchee/deoplete-jedi'
-" Plug 'pangloss/vim-javascript'
+ "Plug 'zchee/deoplete-jedi'
+Plug 'pangloss/vim-javascript'
 " Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+"Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+"Plug 'jparise/vim-graphql'
 
 " c/o :CocInstall coc-tsserver
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
-Plug 'ianks/vim-tsx'
+"Plug 'ianks/vim-tsx'
 
 
 "----------- Flutter -------------------------------------------
@@ -356,7 +360,9 @@ nmap ++ <plug>NERDCommenterToggle
 " ====================================================================
 " vim-jsx
 " ====================================================================
-autocmd BufNewFile,BufRead *.js set filetype=typescript.tsx
+"autocmd BufNewFile,BufRead *.js set filetype=typescript.tsx
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 " ====================================================================
 
 

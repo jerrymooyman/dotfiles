@@ -1,6 +1,35 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 
 # Uncomment for profiling
 #zmodload zsh/zprof
+
+# -------------------------------------------------------------
+# zinit - zsh plugin manager
+# -------------------------------------------------------------
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+# download if not already installed
+if [ ! -d "$ZINIT_HOME" ]; then
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+# source/load zinit
+source "${ZINIT_HOME}/zinit.zsh"
+
+# powerlevel10k
+zinit ice depth=1; 
+zinit light romkatv/powerlevel10k
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# vi-mode
+zinit light jeffreytse/zsh-vi-mode
 
 # -------------------------------------------------------------
 # Base PATHs
@@ -24,28 +53,28 @@ export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 # -------------------------------------------------------------
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/jmooyman/.oh-my-zsh
+# export ZSH=/Users/jmooyman/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
-ZSH_THEME="bullet-train"
+# ZSH_THEME="bullet-train"
 # https://github.com/caiogondim/bullet-train.zsh
 
 # Uncomment for dark terminals
-BULLETTRAIN_CONTEXT_FG=white
+#BULLETTRAIN_CONTEXT_FG=white
 
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# sensitive completion must be off. _ and - will be intdrchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
+# DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -60,7 +89,7 @@ DISABLE_AUTO_UPDATE="true"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -75,7 +104,7 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # zsh-completions
 #fpath=(/usr/local/share/zsh-completions $fpath)
 
@@ -85,20 +114,24 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
 # plugins=(git colored-man-pages colorize github brew osx zsh-syntax-highlighting vi-mode node npm docker docker-compose thefuck themes)
-plugins=(git colored-man-pages wd colorize osx vi-mode node npm docker docker-compose thefuck themes)
+# plugins=(git colored-man-pages wd colorize osx vi-mode node npm docker docker-compose jhipster thefuck themes)
 
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
+# ruby
+eval "$(rbenv init - zsh)"
 
-source $ZSH/oh-my-zsh.sh
+
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# source $ZSH/oh-my-zsh.sh
 
 
 # make zsh faster
-autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
+# autoload -Uz compinit
+# for dump in ~/.zcompdump(N.mh+24); do
+#   compinit
+# done
+# compinit -C
 
 # -------------------------------------------------------------
 
@@ -129,7 +162,7 @@ export LANG=en_AU.UTF-8
 # short hand for zsh & vim configs
 # -------------------------------------------------------------
 
-alias evrc="vi ~/.config/nvim/init.vim"
+alias evrc="vi ~/.config/nvim"
 alias rc=". ~/.zshrc"
 alias erc="vi ~/.zshrc"
 
@@ -144,11 +177,14 @@ alias erc="vi ~/.zshrc"
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  export EDITOR='nvim'
 fi
 
 alias vi="nvim"
 alias vim="nvim"
+
+export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
+
 
 # -------------------------------------------------------------
 
@@ -167,6 +203,18 @@ alias vim="nvim"
 #ssh-add -K ${SSH_KEY_PATH}
 
 
+# -------------------------------------------------------------
+# ssh
+# -------------------------------------------------------------
+function load-work-ssh {
+    ssh-add -K ~/.ssh/jerry_mooyman_bitbucket_id
+}
+# -------------------------------------------------------------
+
+export BITBUCKET_USER="jerry.mooyman@forgeworks.com"
+# Secrets are NOT kept here - this repo is public. They live in ~/.zshrc.secrets
+# (chmod 600, never committed), e.g. export BITBUCKET_TOKEN="..."
+[ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"
 
 # -------------------------------------------------------------
 # JAVA settings
@@ -225,26 +273,26 @@ export emu_path=$ANDROID_HOME/emulator/emulator
 # react native
 # -------------------------------------------------------------
 
-enable-node() {
-  if [[ -d ~/.nvm.DISABLED ]]
-  then
-      mv ~/.nvm.DISABLED ~/.nvm
-      nvm use default
-      echo "Node enabled"
-  else
-      echo "Node is already enabled"
-  fi
-}
+# enable-node() {
+#   if [[ -d ~/.nvm.DISABLED ]]
+#   then
+#       mv ~/.nvm.DISABLED ~/.nvm
+#       nvm use default
+#       echo "Node enabled"
+#   else
+#       echo "Node is already enabled"
+#   fi
+# }
 
-disable-node() {
-  if [[ -d ~/.nvm ]]
-  then
-      mv ~/.nvm ~/.nvm.DISABLED
-      echo "Node disabled"
-  else
-      echo "Node is already disabled"
-  fi
-}
+# disable-node() {
+#   if [[ -d ~/.nvm ]]
+#   then
+#       mv ~/.nvm ~/.nvm.DISABLED
+#       echo "Node disabled"
+#   else
+#       echo "Node is already disabled"
+#   fi
+# }
 
 alias esl="eslint **/*.js --quiet"
 
@@ -332,8 +380,8 @@ display-docker-machine-setup-usage() {
   echo -e "Example:\ndocker-machine-setup mob-m \n"
 }
 
-#alias dcd="docker-compose down"
-#alias dcu="docker-compose up"
+alias dcd="docker-compose down"
+alias dcu="docker-compose up -d"
 #alias dcr="dcd && dcu"
 #alias di="docker images"
 #alias dp="docker ps"
@@ -343,7 +391,7 @@ display-docker-machine-setup-usage() {
 #alias dra="docker rm $(docker ps -aq)"
 alias docker-restart="osascript -e 'quit app \"Docker\"' && open -a Docker"
 
-alias dmcu='eval $(docker-machine env default) && eval $(aws ecr get-login --region ap-southeast-2 --no-include-email --profile rescd) && DOCKER_HOST_IP=$(docker-machine ip default) docker-compose up -d'
+#alias dmcu='eval $(docker-machine env default) && eval $(aws ecr get-login --region ap-southeast-2 --no-include-email --profile rescd) && DOCKER_HOST_IP=$(docker-machine ip default) docker-compose up -d'
 
 # -------------------------------------------------------------
 
@@ -353,7 +401,7 @@ alias dmcu='eval $(docker-machine env default) && eval $(aws ecr get-login --reg
 # AWS
 # -------------------------------------------------------------
 # login to ECR
-alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"
+#alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 --profile rescd)"
 # -------------------------------------------------------------
 
 
@@ -362,8 +410,31 @@ alias lecr="eval $(aws ecr get-login --no-include-email --region ap-southeast-2 
 # -------------------------------------------------------------
 # git
 # -------------------------------------------------------------
-alias gcw="git commit -m 'WORK IN PROGRESS'"
-alias gac="gaa && gcw --no-verify"
+alias ga="git add"
+alias gaa="git add --all"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gcm="git checkout master"
+alias gst="git status"
+alias gl="git pull"
+alias gd="git diff"
+alias gp=git push
+# alias gpsup="git push --set-upstream origin $(git_current_branch)"
+alias gp="git push"
+alias gcw="git push"
+alias gp="git push"
+alias gc="git commit"
+alias glg="git log"
+alias gb="git branch"
+
+function git-commit-skip-ci() {
+  git commit -m "[skip ci] $1"
+}
+alias gcw="gc -m 'wip'"
+alias gcwn="gcw --no-verify"
+alias gcs="git-commit-skip-ci"
+alias gac="gaa && gcw"
+alias gacn="gac --no-verify"
 # -------------------------------------------------------------
 
 
@@ -411,6 +482,7 @@ show-ip() {
 
 # to make npm installs faster
 export JOBS=max
+export NODE_OPTIONS="--max-old-space-size=8192"
 
 # nvm - node version manager
 #export NVM_DIR="$HOME/.nvm"
@@ -422,6 +494,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # loads nvm bash_completion
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # -------------------------------------------------------------
 
 
@@ -439,7 +512,8 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 
 
 # search using fzf (fuzzy)
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 
 # auto-complete for tldr
 complete -W "$(tldr 2>/dev/null --list)" tldr
@@ -462,12 +536,19 @@ complete -W "$(tldr 2>/dev/null --list)" tldr
 #export PATH="$HOME/Library/Haskell/bin:$PATH"
 
 
+# -------------------------------------------------------------
+# autojump
+# -------------------------------------------------------------
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+# -------------------------------------------------------------
+
 
 
 # -------------------------------------------------------------
 # Flutter
 # -------------------------------------------------------------
 export PATH="$HOME/bin/flutter/bin:$PATH"
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 # -------------------------------------------------------------
 
 
@@ -487,13 +568,19 @@ function dmtail {
 # find inspection dbs
 #alias findinspectiondbs="find . -name "inspections.db" -exec ls -lh {} \;"
 
-
-
+#alias python3=/usr/local/bin/python3.11
+#python3=/Users/jmooyman/.pyenv/shims/python3.11
+python3=/Users/jmooyman/.pyenv/shims/python3.14
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
 # -------------------------------------------------------------
 # virtualenv
 # -------------------------------------------------------------
-export PATH="/Users/jmooyman/Library/Python/2.7/bin:$PATH"
-alias activate="source .venv/playbooks/bin/activate"
+#export PATH="/Users/jmooyman/Library/Python/2.7/bin:$PATH"
+# alias activate="source .venv/playbooks/bin/activate"
+alias activate="source env/bin/activate"
+
 # -------------------------------------------------------------
 
 
@@ -541,6 +628,129 @@ show-used-ports() {
   netstat -a -n | grep 'LISTEN '
 }
 
+# -------------------------------------------------------------
+# jhipster commands
+# -------------------------------------------------------------
+# https://github.com/jhipster/jhipster-oh-my-zsh-plugin/blob/main/jhipster.plugin.zsh
+
+alias jhappup='docker compose -f src/main/docker/app.yml up -d'
+alias jhappdown='docker compose -f src/main/docker/app.yml down'
+alias jhappstop='docker compose -f src/main/docker/app.yml stop'
+alias jhapplogs='docker compose -f src/main/docker/app.yml logs --follow'
+
+
+alias acd="jhappdown"
+alias acu="jhappup"
+app_build_tar() {
+    ./gradlew jibBuildTar && docker load --input build/jib-image.tar
+}
+alias abt="app_build_tar"
+# -------------------------------------------------------------
+
+# -------------------------------------------------------------
+# tardis project
+# -------------------------------------------------------------
+function start-tardis-server-refresh {
+    gw --stop
+    # Wipe the DB: down the SAME stack we bring up, WITH -v to remove the postgres volume.
+    # (Was `acd` = `docker compose -f app.yml down` — wrong stack + no -v — so it never wiped.)
+    docker compose -f src/main/docker/local-env.yml down -v
+    docker compose -f src/main/docker/local-env.yml up -d
+    gw
+}
+function start-tardis-server {
+    gw --stop
+    # docker-compose -f src/main/docker/postgresql.yml up -d
+    docker-compose -f src/main/docker/local-env.yml up -d
+    gw
+}
+
+alias acub="start-tardis-server"
+alias acrb="start-tardis-server-refresh"
+alias ast="npm run start"
+
+alias nrd="npm run dev"
+alias nrs="npm run start"
+
+# function run-cypress-spec {
+#     npx cypress run --config-file cypress.local.config.ts --spec $1
+# }
+#alias seeddata="npm run cypress:run"
+# alias seed-company='run-cypress-spec "cypress/e2e/platform/admin/company.cy.ts"'
+# alias seed-surveys='run-cypress-spec "cypress/e2e/platform/company-workspaces/safety-of-work-survey/company-survey-report-view.cy.ts"'
+# alias seed-strategy='run-cypress-spec "cypress/e2e/platform/company-workspaces/strategy.cy.ts"'
+
+alias jw='npm run jest -- --watch'
+
+#function start-tardis-dev {
+#    docker-compose -f src/main/docker/postgresql.yml up -d
+#    ./gradlew -x webpack
+#    osascript -e 'tell application "iTerm" to activate' -e 'tell application "System Events" to tell process "iTerm" to keystroke "d" using command down' && npm run start &
+#}
+# -------------------------------------------------------------
+
+
+# function open-aws-tunnel-to-dev-db {
+#     ssh -i "~/.ssh/sydney-dev.pem" -f -N -L 5433:dev-dev.chixgss4hofl.ap-southeast-2.rds.amazonaws.com:5432 ec2-user@ec2-54-252-207-188.ap-southeast-2.compute.amazonaws.com -v
+# }
+
+
 # Uncomment for profiling
 #zprof
+
+export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+export FZF_DEFAULT_COMMAND='fd'
+
+source /Users/jmooyman/.docker/init-zsh.sh || true # Added by Docker Desktop
+
+
+
+alias ls="eza --icons=always"
+alias ll="ls -l"
+alias la="ls -a"
+
+eval "$(zoxide init zsh)"
+alias cd="z"
+
+PATH=/usr/local/bin/claude:$PATH
+
+
+# -------------------------------------------------------------
+# nvm node version switcher
+# -------------------------------------------------------------
+autoload -U add-zsh-hook
+
+load-nvmrc() {
+  local nvmrc_path
+  nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version
+    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+      nvm use
+    fi
+  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+
+# -------------------------------------------------------------
+
+# export PATH="$HOME/.local/bin:$PATH"
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/jmooyman/.dart-cli-completion/zsh-config.zsh ]] && . /Users/jmooyman/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
 
